@@ -1,0 +1,103 @@
+/* reset.css – базовый сброс стилей для всего проекта */
+
+/* 1. Сброс отступов, паддингов, бордеров и базового размера */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+/* 2. Убираем особенности отображения у HTML5-элементов в старых браузерах */
+article, aside, details, figcaption, figure,
+footer, header, main, nav, section, summary {
+  display: block;
+}
+
+/* 3. Убираем шрифты и стили у форм */
+button, input, select, textarea {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* 4. Убираем особенности ссылок */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+h1, h2, h3, h4, h5, h6, p, pre {
+  margin: 0;
+}
+
+/* 5. Таблицы без отступов */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 6. Убираем маркеры у списков */
+ol, ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+/* 7. Наследование базового шрифта и выравнивание */
+html {
+  scroll-behavior: smooth;
+  line-height: 1.15;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  font-family: sans-serif;
+  background: #fff;
+  color: #000;
+}
+
+/* 8. Изображения по умолчанию адаптивные */
+img, picture, video, canvas, svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* 9. Удаляем выделение на фокус, если не нужно */
+:focus {
+  outline: none;
+}
+
+/* 10. Сброс курсора на кнопках */
+button {
+  cursor: pointer;
+}
+
+/* 11. Убираем стрелки у input[type=number] */
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* 12. Наследование для форм и блоков */
+input, button, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+
+/* 13. Убираем выделение текста везде, если не нужно */
+::selection {
+  background: #000;
+  color: #fff;
+}

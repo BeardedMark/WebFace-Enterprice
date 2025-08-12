@@ -1,0 +1,43 @@
+[
+    {
+        "getCatalogByGuid": "Получение информации о каталоге по guid",
+        "in": {
+            "guid": "string"
+        },
+        "out": {
+            "guid": "string",
+            "name": "string",
+            "catalogs": "getCatalogsByCatalogGuid[]",
+            "offers": "getOffersByCatalogGuid[]"
+        }
+    },
+    {
+        "getCatalogsByCatalogGuid": "Получение списка дочерних категорий по гуиду категории",
+        "in": {
+            "guid": "string"
+        },
+        "out": [{
+            "catalogs": "array"
+        }]
+    },
+    {
+        "getOffersByCatalogGuid": "Получение списка товаров по гуиду категории",
+        "in": {
+            "guid": "string"
+        },
+        "out": {
+            "offers": "getOfferByGuid[]"
+        }
+    },
+    {
+        "getOfferByGuid": "Получение товара по гуиду",
+        "in": {
+            "guid": "string"
+        },
+        "out": {
+            "guid": "string",
+            "name": "string",
+            "...": "..."
+        }
+    }
+]

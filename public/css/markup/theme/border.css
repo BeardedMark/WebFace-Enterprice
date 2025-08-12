@@ -1,0 +1,43 @@
+/* === Border Utilities === */
+
+/* Стиль и толщина */
+.bord-solid {
+  border-style: solid;
+  border-width: 1px;
+  border-color: transparent;
+}
+
+.bord-dashed {
+  border-style: dashed;
+  border-width: 1px;
+  border-color: transparent;
+}
+
+.bord-b-dashed { border: solid 0 0 1px 0 transparent; }
+
+/* Скругление углов */
+.bord-r-max  { border-radius: 100vmax; }
+.bord-r-8    { border-radius: 8px; }
+.bord-r-13   { border-radius: 13px; }
+.bord-r-21   { border-radius: 21px; }
+
+/* Цвета границ */
+.bord-color-prime     { border-color: var(--color-prime); }
+.bord-color-second    { border-color: var(--color-second); }
+.bord-color-accent    { border-color: var(--color-accent); }
+.bord-color-other     { border-color: var(--color-other); }
+.bord-color-danger    { border-color: var(--color-danger); }
+.bord-color-warning   { border-color: var(--color-warning); }
+.bord-color-success   { border-color: var(--color-success); }
+
+.hov-border-color-prime:hover    { border-color: var(--color-prime); }
+.hov-border-color-second:hover   { border-color: var(--color-second); }
+.hov-border-color-accent:hover   { border-color: var(--color-accent); }
+.hov-border-color-other:hover    { border-color: var(--color-other); }
+.hov-border-color-danger:hover   { border-color: var(--color-danger); }
+
+/* Граница по сторонам (если нужно — расширим позже) */
+.bord-t { border-top: 1px solid currentColor; }
+.bord-b { border-bottom: 1px solid currentColor; }
+.bord-s  { border-left: 1px solid currentColor; }
+.bord-e { border-right: 1px solid currentColor; }

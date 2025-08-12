@@ -1,0 +1,36 @@
+/* Одинаковый отступ со всех сторон */
+.mar-1    { margin: var(--size-1); }
+.mar-2    { margin: var(--size-2); }
+.mar-3    { margin: var(--size-3); }
+.mar-5    { margin: var(--size-5); }
+.mar-8    { margin: var(--size-8); }
+.mar-13   { margin: var(--size-13); }
+.mar-21   { margin: var(--size-21); }
+.mar-34   { margin: var(--size-34); }
+.mar-55   { margin: var(--size-55); }
+.mar-89   { margin: var(--size-89); }
+.mar-144  { margin: var(--size-144); }
+.mar-233  { margin: var(--size-233); }
+
+/* Горизонтальные (x) и вертикальные (y) отступы */
+.mar-x-13  { margin-left: var(--size-13); margin-right: var(--size-13); }
+.mar-y-13  { margin-top: var(--size-13); margin-bottom: var(--size-13); }
+
+.mar-x-21  { margin-left: var(--size-21); margin-right: var(--size-21); }
+.mar-y-21  { margin-top: var(--size-21); margin-bottom: var(--size-21); }
+
+.mar-x-34  { margin-left: var(--size-34); margin-right: var(--size-34); }
+.mar-y-34  { margin-top: var(--size-34); margin-bottom: var(--size-34); }
+
+/* Отдельные стороны */
+.mar-t-13  { margin-top: var(--size-13); }
+.mar-r-13  { margin-right: var(--size-13); }
+.mar-b-13  { margin-bottom: var(--size-13); }
+.mar-l-13  { margin-left: var(--size-13); }
+
+.mar-t-21  { margin-top: var(--size-21); }
+.mar-r-21  { margin-right: var(--size-21); }
+.mar-b-21  { margin-bottom: var(--size-21); }
+.mar-l-21  { margin-left: var(--size-21); }
+
+/* …можно продолжить для всех остальных значений */
