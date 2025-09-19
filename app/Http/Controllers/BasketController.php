@@ -28,18 +28,20 @@ class BasketController extends Controller
 
         foreach ($basketSession as $key => $item) {
             $offer = $this->extansion->getOffer(['guid' => $item['offerGuid']]);
+            $variant = $item['variantGuid'] ? $this->extansion->getVariant(['variantGuid' => $item['variantGuid']]) : null;
 
             $data = array_merge($item, [
-                'offer' => $offer, // добавляем данные оффера
+                'offer' => $offer,
+                'variant' => $variant,
             ]);
 
             if (!empty($item['postponed']) && $item['postponed'] === true) {
                 $postponed[$key] = $data;
-                $postponedSumm += $data['offer']['price'];
+                $postponedSumm += $data['offer']['maxPrice'];
                 $postponedCount += $data['quantity'];
             } else {
                 $basket[$key] = $data;
-                $basketSumm += $data['offer']['price'];
+                $basketSumm += $data['offer']['maxPrice'];
                 $basketCount += $data['quantity'];
             }
         }
@@ -55,14 +57,14 @@ class BasketController extends Controller
         $quantity = (int) $request->input('quantity', 1);
         $user = session('user');
 
-        if ($user) {
-            $this->extansion->AddOfferToBasket([
-                'userGuid' => $user['guid'],
-                'offerGuid' => $offerGuid,
-                'variantGuid' => $variantGuid,
-                'count' => $quantity,
-            ]);
-        } else {
+        // if ($user) {
+        //     $this->extansion->AddOfferToBasket([
+        //         'userGuid' => $user['guid'],
+        //         'offerGuid' => $offerGuid,
+        //         'variantGuid' => $variantGuid,
+        //         'count' => $quantity,
+        //     ]);
+        // } else {
             $basket = session('basket', []);
             $key = $offerGuid . (isset($variantGuid) ? '-' . $variantGuid : '');
 
@@ -73,7 +75,7 @@ class BasketController extends Controller
             ];
 
             session(['basket' => $basket]);
-        }
+        // }
 
         return back()->with('success', 'Товар добавлен в корзину');
     }

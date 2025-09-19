@@ -4,18 +4,14 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ExtensionService;
-use App\Domains\OData\Services\ODataService;
 
 class ContractorController extends Controller
 {
     protected $extansion;
-    protected $odata;
-    protected $odataEntity = "Catalog_Контрагенты";
 
-    public function __construct(ExtensionService $extansion, ODataService $odata)
+    public function __construct(ExtensionService $extansion)
     {
         $this->extansion = $extansion;
-        $this->odata = $odata;
     }
 
     public function index()
@@ -36,9 +32,7 @@ class ContractorController extends Controller
         $orders = $this->extansion->GetCustomerOrdersByContractor(['guid' => $id]);
         $prices = $this->extansion->listPriceByContractor(['guid' => $id]);
 
-        $odata = []; //$this->odata->get($this->odataEntity, $id);
-
-        return view('db.contractors.show', compact('contractor', 'orders', 'prices', 'odata'));
+        return view('db.contractors.show', compact('contractor', 'orders', 'prices'));
     }
     public function edit(string $id) {}
 

@@ -31,39 +31,45 @@
                                 {{ $offer['brand'] ? $offer['brand']['name'] : '' }}
                             </span>
                         @endif
+
+                        <span>Спрос: {{ $offer['rating'] }}%</span>
                     </div>
 
                     @if ($offer['countVariants'] <= 0)
-                    <div class="flex-col-5">
-                        <p class="flex-col pad-x-5">
-                            <span
-                                class="color-{{ isset($offer['freeStock']) && $offer['freeStock'] > 0 ? 'main' : 'second' }}">
-                                Кол-во:
-                                @component('db.offers.data.stock', [
-                                    'totalStock' => $offer['totalStock'],
-                                    'freeStock' => $offer['freeStock'],
-                                    'unit' => $offer['unit'],
-                                ])
-                                @endcomponent
-                            </span>
-                        </p>
+                        <div class="flex-col-5">
+                            <p class="flex-col pad-x-5">
+                                <span
+                                    class="color-{{ isset($offer['freeStock']) && $offer['freeStock'] > 0 ? 'main' : 'second' }}">
+                                    Кол-во:
+                                    @component('db.offers.data.stock', [
+                                        'totalStock' => $offer['totalStock'],
+                                        'freeStock' => $offer['freeStock'],
+                                        'unit' => $offer['unit'],
+                                    ])
+                                    @endcomponent
+                                </span>
+                            </p>
 
-                        <p class="flex-col pad-x-5">
-                            @if (isset($offer['personalPrice']) && $offer['personalPrice'] > 0)
-                                <span class="font-md color-second font-through">
-                                    {{ $offer['countVariants'] > 1 ? 'от ' : '' }}{{ $offer['price'] }} ₽
-                                </span>
+                            <p class="flex-col pad-x-5">
 
-                                <span class="font-xl color-success font-bold">
-                                    {{ $offer['countVariants'] > 1 ? 'от ' : '' }}{{ $offer['personalPrice'] }} ₽
-                                </span>
-                            @else
-                                <span class="font-xl font-bold">
-                                    {{ $offer['countVariants'] > 1 ? 'от ' : '' }}<x-number :value="$offer['price']" /> ₽
-                                </span>
-                            @endif
-                        </p>
-                    </div>
+                                @if ($offer['maxPrice'] > 0)
+                                    @if (isset($offer['minPrice']) && $offer['minPrice'] > 0 && $offer['maxPrice'] != $offer['minPrice'])
+                                        {{-- <span class="font-md color-second font-through">
+                            {{ $offer['countVariants'] > 1 ? 'от ' : '' }}{{ $offer['maxPrice'] }}₽</span> --}}
+                                        <span class="font-md font-bold">
+                                            {{ $offer['countVariants'] > 1 ? 'от ' : '' }}{{ $offer['minPrice'] }}₽</span>
+                                        <span class="font-sm color-second">
+                                            {{ $offer['countVariants'] > 1 ? 'до ' : '' }}{{ $offer['maxPrice'] }}₽</span>
+                                    @else
+                                        <span class="font-md font-bold {{ $offer['maxPrice'] > 0 ? '' : 'color-second' }}">
+                                            {{ $offer['countVariants'] > 1 ? 'от ' : '' }}<x-number
+                                                :value="$offer['maxPrice']" />₽</span>
+                                    @endif
+                                @else
+                                    <span class="color-second">Цена по запросу</span>
+                                @endif
+                            </p>
+                        </div>
 
                         <div class="flex-row-5 ai-end w-100">
                             <div class="flex-row-5 flex-grow jc-end ai-center">
@@ -108,6 +114,19 @@
                                 <div class="cut"></div>
 
                                 <div class="flex-row-8 ai-center">
+                                    <div class="flex-center bord-other bord-rad-5 back-light pad-3"
+                                        style="width: 64px; height: 64px;">
+                                        @empty($variant['imageGuid'])
+                                            <img class="lock"
+                                                src="https://img.icons8.com/fluency-systems-regular/EFEDEB/48/no-image.png"
+                                                alt="no-image">
+                                        @else
+                                            <img class="lock"
+                                                src="{{ config('enterprice.base_url') }}public_api/offer/GetImage?guid={{ $variant['imageGuid'] }}"
+                                                alt="{{ $variant['imageGuid'] }}">
+                                        @endempty
+                                    </div>
+
                                     <p class="flex-col flex-grow">
                                         <span>{{ $variant['name'] }}</span>
 
@@ -120,8 +139,11 @@
                                             @endcomponent
                                         </span>
                                     </p>
-
-                                    <span class="font-md font-bold"><x-number :value="$variant['price']" /> ₽</span>
+                                    @if ($variant['price'] > 0)
+                                        <span class="font-md font-bold"><x-number :value="$variant['price']" /> ₽</span>
+                                    @else
+                                        <span class="font-sm color-second">Цена по запросу</span>
+                                    @endif
 
                                     <form action="{{ route('basket.add') }}" method="POST" class="inline">
                                         @csrf
@@ -144,7 +166,7 @@
                 <div class="bord-other bord-rad-5 img-square lock back-light pad-5">
                     @if ($offer['imageGuid'])
                         <img class="mar-5 lock"
-                            src="{{ config('enterprice.base_url') }}Extensions/Image/get?guid={{ $offer['imageGuid'] }}"
+                            src="{{ config('enterprice.base_url') }}public_api/offer/GetImage?guid={{ $offer['imageGuid'] }}"
                             alt="{{ $offer['imageGuid'] }}">
                     @else
                         <img class="lock" src="https://img.icons8.com/fluency-systems-regular/EFEDEB/48/no-image.png"

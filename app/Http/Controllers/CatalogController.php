@@ -4,25 +4,21 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ExtensionService;
-use App\Domains\OData\Services\ODataService;
 
 class CatalogController extends Controller
 {
     protected $extansion;
-    protected $odata;
-    protected $odataEntity = "Catalog_Номенклатура";
 
-    public function __construct(ExtensionService $extansion, ODataService $odata)
+    public function __construct(ExtensionService $extansion)
     {
         $this->extansion = $extansion;
-        $this->odata = $odata;
     }
 
     public function index()
     {
         $catalog = $this->extansion->cardCatalog();
         $catalogs = $this->extansion->indexCatalogs();
-        $offers = $this->extansion->indexOffers();
+        $offers = $this->extansion->indexOffers(['sort' => 'rating-desc']);
         $breadcrumbs = [['title' => 'Каталог']];
 
         return view('db.catalogs.show', compact('catalog', 'catalogs', 'offers', 'breadcrumbs'));
@@ -36,7 +32,7 @@ class CatalogController extends Controller
     {
         $catalog = $this->extansion->cardCatalog(['catalogGuid' => $id]);
         $catalogs = $this->extansion->indexCatalogs(['catalogGuid' => $id]);
-        $offers = $this->extansion->indexOffers(['catalogGuid' => $id]);
+        $offers = $this->extansion->indexOffers(['catalogGuid' => $id, 'sort' => 'rating-desc']);
 
         $breadcrumbs = [['title' => 'Каталог', 'url' => route('catalogs.index')]];
         foreach ($catalog['parents'] as $parent) {

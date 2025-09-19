@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Domains\OData\Http\Controllers\ODataController;
 use App\Http\Controllers\{
     PageController,
     ContractorController,
@@ -9,39 +8,34 @@ use App\Http\Controllers\{
     CatalogController,
     OrderController,
     AuthController,
-    ExtensionController,
     BasketController
 };
 
 use App\Http\Middleware\{
     CheckAuth,
-    CheckGuest,
-    checkAdmin
+    CheckGuest
 };
 
 // Pages
 Route::get('/', [PageController::class, 'main'])->name('pages.main');
 Route::get('/about', [PageController::class, 'about'])->name('pages.about');
-Route::get('/feed', [PageController::class, 'feed'])->name('pages.feed');
 Route::get('/contacts', [PageController::class, 'contacts'])->name('pages.contacts');
-
-Route::get('/enterprice', [PageController::class, 'enterprice'])->name('pages.enterprice');
-Route::get('/extension', [PageController::class, 'extension'])->name('pages.extension');
-Route::get('/enterprice-ping', [ODataController::class, 'ping'])->name('enterprice.ping');
+Route::post('/message', [PageController::class, 'message'])->name('pages.message');
+Route::get('/privacy', [PageController::class, 'privacy'])->name('pages.privacy');
 
 // Auth
 Route::middleware(CheckGuest::class)->group(function () {
-Route::get('/login', [AuthController::class, 'enter'])->name('auth.login');
-Route::post('/login', [AuthController::class, 'login']);
-Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
-Route::post('/register', [AuthController::class, 'registration']);
+    Route::get('/login', [AuthController::class, 'enter'])->name('auth.login');
+    Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/register', [AuthController::class, 'register'])->name('auth.register');
+    Route::post('/register', [AuthController::class, 'registration']);
 });
 
 Route::middleware(CheckAuth::class)->group(function () {
     Route::get('/auth', [AuthController::class, 'main'])->name('auth.main');
     Route::get('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::resource('/contractors', ContractorController::class);
+    Route::resource('/contractors', ContractorController::class);
 });
 
 // Offers
@@ -67,16 +61,4 @@ Route::prefix('basket')->group(function () {
     Route::delete('/remove/{id}', [BasketController::class, 'remove'])->name('basket.remove'); // удалить товар
     Route::delete('/clear', [BasketController::class, 'clear'])->name('basket.clear');  // очистить корзину
     Route::post('/basket/postpone/{id}', [BasketController::class, 'postpone'])->name('basket.postpone');
-});
-
-// OData
-Route::get('/odata', [ODataController::class, 'dashboard'])->name('odata.dashboard');
-Route::prefix('odata/{entity}')->controller(ODataController::class)->group(function () {
-    Route::get('/', 'index')->name('odata.index');
-    Route::get('/create', 'create')->name('odata.create');
-    Route::post('/', 'store')->name('odata.store');
-    Route::get('/{id}', 'show')->name('odata.show');
-    Route::get('/{id}/edit', 'edit')->name('odata.edit');
-    Route::put('/{id}', 'update')->name('odata.update');
-    Route::delete('/{id}', 'destroy')->name('odata.destroy');
 });

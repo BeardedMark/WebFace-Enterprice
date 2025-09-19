@@ -50,7 +50,7 @@ class ExtensionService
     }
     public function getBaseData(array $data = []): array
     {
-        return $this->request('get', 'public_api/base/data', $data)->json() ?? [];
+        return $this->request('get', 'public_api/settings/base/data', $data)->json() ?? [];
     }
 
 
@@ -85,6 +85,11 @@ class ExtensionService
     public function getVariants(array $data = []): array
     {
         return $this->request('get', 'public_api/variants/listVariantsByOfferGuid', $data)->json() ?? [];
+    }
+
+    public function getVariant(array $data = []): array
+    {
+        return $this->request('get', 'public_api/variants/getVariantInfoByGuid', $data)->json() ?? [];
     }
 
     public function listPriceByContractor(array $data = []): array

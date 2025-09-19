@@ -19,22 +19,26 @@
                                 <label class="pad-x-5" for="login">Имя пользователя
                                     <span class="color-danger">*</span></label>
                                 <input class="input" type="text" name="login" id="login"
-                                    value="{{ old('login') }}" required>
-                                <p class="pad-x-5 font-xs color-second">Персональный логин для входа в систему</p>
+                                    value="{{ old('login') }}" placeholder="Персональный логин для входа в систему"
+                                    required>
                             </div>
 
                             <div class="flex-col">
                                 <label class="pad-x-5" for="password">Пароль пользователя
                                     <span class="color-danger">*</span></label>
                                 <input class="input" type="password" name="password" id="password"
-                                    value="{{ old('password') }}">
-                                <p class="pad-x-5 font-xs color-second">Обычно имеет от 6 символов, содержит буквы в нижнем
-                                    и верхнем регистре, числа и символы</p>
+                                    value="{{ old('password') }}"
+                                    placeholder="Обычно имеет от 6 символов, содержит буквы в нижнем и верхнем регистре, числа и символы"
+                                    required>
                             </div>
+
                         </div>
 
                         <div class="flex-row-5 jc-end">
-                            <a class="button-other">Восстановить данные</a>
+                            <span class="ai-center flex-grow pad-x-5"><x-antibot /></span>
+
+                            <a class="item-other color-danger" href="{{ route('auth.logout') }}">Выйти из профиля</a>
+                            <a class="button-other" href="{{ route('pages.privacy') }}">Восстановить данные</a>
                             <a class="button-second" href="{{ route('auth.register') }}">Регистрация</a>
                             <button class="button-main" type="submit">Войти</button>
                         </div>

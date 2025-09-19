@@ -16,7 +16,7 @@ body {
 .frame-prime {
     transition: 0.2s;
 
-    background-color: var(--color-other);
+    /* background-color: var(--color-other); */
     border: 1px solid var(--color-other);
     color: var(--color-main);
 }
@@ -46,7 +46,7 @@ body {
 }
 
 .frame-other {
-    background-color: var(--color-prime);
+    /* background-color: var(--color-prime); */
     border: 1px solid var(--color-other);
     color: var(--color-main);
 }
@@ -357,10 +357,20 @@ input::selection {
     color: var(--color-prime); */
 }
 
+textarea.input::placeholder,
 input::placeholder {
     color: var(--color-second);
     opacity: 1;
     /* для Firefox */
+}
+
+textarea.input,
+textarea.input:focus,
+textarea.input:active,
+textarea.input:target {
+    height: auto;       /* игнорируем фиксированную высоту */
+    min-height: 33px;   /* базовый размер */
+    resize: vertical;   /* можно менять высоту */
 }
 
 .input,
@@ -375,7 +385,7 @@ input::placeholder {
     border-radius: 5px;
     color: var(--color-main);
     padding: 5px 13px;
-    transition: 0.2s;
+    transition: border 0.2s, color 0.2s, background-color 0.2s;
     font-size: 14px;
     outline: transparent;
     outline-width: 0;
@@ -547,6 +557,10 @@ input[type="range"]::-ms-thumb:hover {
     pointer-events: none;
 }
 
+.unlock {
+    pointer-events: unset;
+}
+
 .lock-opacity {
     pointer-events: none;
     opacity: 0.5;
@@ -641,15 +655,24 @@ input[type="range"]::-ms-thumb:hover {
         0px 75px 80px 0px rgba(46, 60, 80, 0.07);
 }
 
-.shadow-real-hover {
-    box-shadow: 0;
-    transition: box-shadow 0.2s;
+.hover-show {
+    opacity: 0;
+    transition: opacity 0.2s;
 }
-.shadow-real-hover:hover {
-    box-shadow: 0px 2.07px 2.21px 0px rgba(46, 60, 80, 0.01),
-        0px 4.98px 5.32px 0px rgba(46, 60, 80, 0.02),
-        0px 9.39px 10.01px 0px rgba(46, 60, 80, 0.03),
-        0px 16.75px 17.86px 0px rgba(46, 60, 80, 0.04),
-        0px 31.33px 33.42px 0px rgba(46, 60, 80, 0.05),
-        0px 75px 80px 0px rgba(46, 60, 80, 0.07);
+.hover-show:hover {
+    opacity: 1;
+}
+
+.hover-scale {
+    transition: transform 0.2s;
+}
+.hover-scale:hover {
+    transform: scale(1.02);
+}
+
+.hover-up {
+    transition: transform 0.2s;
+}
+.hover-up:hover {
+    transform: translateY(-3px);
 }

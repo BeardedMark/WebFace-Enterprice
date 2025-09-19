@@ -5,18 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Services\ExtensionService;
-use App\Domains\OData\Services\ODataService;
 
 class OfferController extends Controller
 {
     protected $extansion;
-    protected $odata;
-    protected $odataEntity = "Catalog_Номенклатура";
 
-    public function __construct(ExtensionService $extansion, ODataService $odata)
+    public function __construct(ExtensionService $extansion)
     {
         $this->extansion = $extansion;
-        $this->odata = $odata;
     }
 
     public function index()
@@ -33,7 +29,6 @@ class OfferController extends Controller
     {
         $offer = $this->extansion->getOffer(['guid' => $id]);
         $variants = $this->extansion->getVariants(['offerGuid' => $id]);
-        $odata = []; //$this->odata->get($this->odataEntity, $id);
 
         $breadcrumbs = [['title' => 'Каталог', 'url' => route('catalogs.index')]];
         if (count($offer['parents']) > 1) {
@@ -63,14 +58,7 @@ class OfferController extends Controller
     {
         $ids = session('favorites', []);
 
-        // Получаем данные по OData
         $offers = [];
-        foreach ($ids as $id) {
-            $odata = $this->odata->get($this->odataEntity, $id);
-            if ($odata) {
-                $offers[] = $odata;
-            }
-        }
 
         return view('db.offers.favorites', compact('offers'));
     }
@@ -94,17 +82,10 @@ class OfferController extends Controller
         $ids = session('compare', []);
 
         $offers = [];
-        foreach ($ids as $id) {
-            $odata = $this->odata->get($this->odataEntity, $id);
-            if ($odata) {
-                $offers[] = $odata;
-            }
-        }
 
         return view('db.offers.compare', compact('offers'));
     }
 
-    // Добавление/удаление из сравнения
     public function toggleCompare(string $id)
     {
         $compare = session()->get('compare', []);

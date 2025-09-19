@@ -1,4 +1,5 @@
 @extends('layouts.container')
+@section('title', 'Ошибка 1С')
 
 @section('container-content')
     <div class="row">

@@ -13,19 +13,6 @@
                     </div>
 
                     <div class="flex-col-13">
-                        @isset($contractors)
-                            <div class="flex-col">
-                                <label class="pad-x-5" for="guidContractor">Выберите контрагента<span
-                                        class="color-danger">*</span></label>
-                                <select class="input" name="guidContractor" id="guidContractor" required>
-                                    <option value=""></option>
-                                    @foreach ($contractors as $contractor)
-                                        <option value="{{ $contractor['guid'] }}">{{ $contractor['name'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        @endisset
-
                         <div class="flex-col">
                             <label class="pad-x-5">Способ получения</label>
                             <div class="flex-row-8">
@@ -76,18 +63,62 @@
 
                         <div class="flex-col">
                             <label class="pad-x-5" for="commentary">Комментарий к заказу</label>
-                            <textarea class="input" name="commentary" id="commentary" rows="3" placeholder="Например: позвонить заранее">{{ old('commentary') }}</textarea>
+                            <textarea class="input" name="commentary" id="commentary" rows="3"
+                                placeholder="Например: позвонить заранее">{{ old('commentary') }}</textarea>
                         </div>
+                    </div>
+
+                    <div class="flex-col-13">
+                        @empty(session('user'))
+                            <div class="flex-col-13">
+                                <div class="flex-col">
+                                    <label class="pad-x-5" for="addres">Ваше имя
+                                        <span class="color-danger">*</span></label>
+                                    <input class="input" type="text" name="name" id="name"
+                                        value="{{ old('name') }}" placeholder="Как к вам обращаться?" required>
+                                </div>
+
+                                <div class="flex-col">
+                                    <label class="pad-x-5" for="addres">Ваш телефон
+                                        <span class="color-danger">*</span></label>
+                                    <input class="input" type="number" name="phone" id="phone"
+                                        value="{{ old('phone') }}" placeholder="Для оперативной связи" required>
+                                </div>
+
+                                <div class="flex-col">
+                                    <label class="pad-x-5" for="addres">Ваш email
+                                        <span class="color-danger">*</span></label>
+                                    <input class="input" type="email" name="email" id="email"
+                                        value="{{ old('email') }}" placeholder="Для передачи документов" required>
+                                </div>
+
+                                <div class="flex-col">
+                                    <label class="pad-x-5" for="addres">ИНН организации
+                                        <span class="color-second font-sm">(не обязательно)</span></label>
+                                    <input class="input" type="number" name="inn" id="inn"
+                                        value="{{ old('inn') }}" placeholder="Для юридических взаимодействий">
+                                </div>
+                            </div>
+                        @else
+                            <div class="flex-col">
+                                <label class="pad-x-5" for="guidContractor">Выберите контрагента<span
+                                        class="color-danger">*</span></label>
+                                <select class="input" name="guidContractor" id="guidContractor" required>
+                                    <option value=""></option>
+                                    @foreach ($contractors as $contractor)
+                                        <option value="{{ $contractor['guid'] }}">{{ $contractor['name'] }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @endempty
                     </div>
                 </div>
             </div>
 
             <div class="col-12 col-md-4 order-1 order-md-2 offset-md-1">
                 <div class="flex-col-21">
-
-
-
                     <div class="flex-row-5 jc-end">
+                            <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
                         <a class="button-other">Условия доставки</a>
                         <button class="button-main" type="submit">Оформить заказ</button>
                     </div>

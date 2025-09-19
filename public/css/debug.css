@@ -1,0 +1,43 @@
+/* Секции */
+
+/* .flex-col-98{
+    outline: 1px solid #E63946;
+    outline-offset: 8px;
+}
+.flex-col-55{
+    outline: 1px dashed #E63946;
+    outline-offset: 7px;
+} */
+
+/* Блоки */
+
+.flex-col-34{
+    outline: 1px solid #F9C74F;
+    /* outline-offset: 6px; */
+}
+.flex-col-21{
+    outline: 1px dashed #F9C74F;
+    /* outline-offset: 5px; */
+}
+.flex-col-13{
+    outline: 1px dotted #F9C74F;
+    /* outline-offset: 4px; */
+}
+
+/* Контент */
+
+.flex-row-8,
+.flex-col-8{
+    outline: 1px solid #ccc;
+    /* outline-offset: 3px; */
+}
+.flex-row-5,
+.flex-col-5{
+    outline: 1px dashed #ccc;
+    /* outline-offset: 2px; */
+}
+.flex-row,
+.flex-col{
+    outline: 1px dotted #ccc;
+    /* outline-offset: 1px; */
+}

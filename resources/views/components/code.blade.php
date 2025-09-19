@@ -1,21 +1,18 @@
-@if(env('APP_DEBUG') && isset($code))
-    {{-- <details class="flex-col-5" style="">
-        <summary class="item-other">Json content ({{ count($code) }})</summary> --}}
-    <div class="flex-col">
+@if (config('settings.debug.code') && isset($code))
+    @dump($code)
+
+    {{-- <div class="flex-col back-main color-prime bord-rad-5 pad-13">
         @foreach ($code as $key => $value)
             @php
                 $count = is_iterable($value) ? count((array) $value) : 0;
-                $isArray = is_array($value) && array_keys($value) === range(0, $count - 1);
-                $brackets = $isArray ? "[{$count}]" : "";
             @endphp
 
-            <details class="flex-col-5">
-                <summary class="item-other font-sm">
-                    {{ $key }} {{ $brackets }}
+            <details>
+                <summary class="font-sm">
+                    {{ $key }} ({{ $count }})
                 </summary>
                 <pre><code>{{ htmlspecialchars_decode(json_encode($value, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)) }}</code></pre>
             </details>
         @endforeach
-    </div>
-    {{-- </details> --}}
+    </div> --}}
 @endif

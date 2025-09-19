@@ -4,18 +4,17 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Services\ExtensionService;
-use App\Domains\OData\Services\ODataService;
+use App\Services\AntibotService;
+use App\Mail\OrderMail;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
     protected $extansion;
-    protected $odata;
-    protected $odataEntity = "Document_ЗаказКлиента";
 
-    public function __construct(ExtensionService $extansion, ODataService $odata)
+    public function __construct(ExtensionService $extansion)
     {
         $this->extansion = $extansion;
-        $this->odata = $odata;
     }
 
     public function index(Request $request)
@@ -49,6 +48,7 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
+        AntibotService::check($request);
         $rawItems = session('basket');
 
         $finalItems = [];
@@ -58,16 +58,21 @@ class OrderController extends Controller
                 continue;
             }
 
-            $quantity = max(1, min((int)($data['quantity'] ?? 1), 100)); // защита min/max
+            // $quantity = max(1, min((int)($data['quantity'] ?? 1), 100)); // защита min/max
             $finalItems[] = [
                 'guidOffer' => $data['offerGuid'],
                 'guidVariant' => $data['variantGuid'],
-                'count' => $quantity,
-                'price' => $quantity,
+                'count' => $data['quantity'],
+                'price' => $data['quantity'],
             ];
         }
 
         $params = [
+            'name' => $request['name'],
+            'phone' => $request['phone'],
+            'email' => $request['email'],
+            'inn' => $request['inn'],
+
             'guidContractor' => $request['guidContractor'],
             'deliveryType' => $request['deliveryType'],
             'items' => $finalItems,
@@ -78,31 +83,38 @@ class OrderController extends Controller
             'commentary' => $request['commentary'],
         ];
 
-        $order = $this->extansion->PostCustomerOrderByContractor($params);
 
-        if (!empty($order['OrderGuid'])) {
-        $oldBasket = session('basket', []);
-        $newBasket = [];
-
-        foreach ($oldBasket as $key => $item) {
-            if (!empty($item['postponed'])) {
-                $item['postponed'] = false;
-                $newBasket[$key] = $item;
-            }
+        if (session('user')) {
+            $order = $this->extansion->PostCustomerOrderByContractor($params);
+        } else {
+            $email = config('settings.contacts.email');
+            Mail::to($email)->send(new OrderMail($params));
         }
 
-        session(['basket' => $newBasket]);
-    }
+        if (!empty($order['OrderGuid'])) {
+            $oldBasket = session('basket', []);
+            $newBasket = [];
 
-        return redirect()->route('orders.show', $order['OrderGuid']);
+            foreach ($oldBasket as $key => $item) {
+                if (!empty($item['postponed'])) {
+                    $item['postponed'] = false;
+                    $newBasket[$key] = $item;
+                }
+            }
+
+            session(['basket' => $newBasket]);
+
+            return redirect()->route('orders.show', $order['OrderGuid']);
+        }
+
+        return redirect()->route('basket.index');
     }
 
     public function show(string $id)
     {
         $order = $this->extansion->cardOrderByGuid(['guid' => $id]);
-        $odata = []; //$this->odata->get($this->odataEntity, $id);
 
-        return view('db.orders.show', compact('order', 'odata'));
+        return view('db.orders.show', compact('order'));
     }
 
     public function edit(string $id)

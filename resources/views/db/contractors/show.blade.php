@@ -32,82 +32,86 @@
         </div>
 
         @isset($contractor['manager'])
-            <div class="flex-col-5 pad-x-5">
+            <div class="flex-col-21 pad-x-5">
                 <h2 class="font-xl font-bold">Персональный менеджер</h2>
-                <p class="font-lg">{{ $contractor['manager']['name'] }}</p>
-                <p class="flex-col-5 font-sm">
-                    @foreach ($contractor['manager']['contacts'] as $contact)
-                        <span class="flex-col">
-                            {{ $contact['value'] }}
-                        </span>
-                    @endforeach
-                </p>
+
+                <div class="flex-col-5 pad-x-5">
+                    <p class="font-lg">{{ $contractor['manager']['name'] }}</p>
+                    <p class="flex-col-5 font-sm">
+                        @foreach ($contractor['manager']['contacts'] as $contact)
+                            <span class="flex-col">
+                                {{ $contact['value'] }}
+                            </span>
+                        @endforeach
+                    </p>
+                </div>
+
             </div>
         @endisset
 
+        <x-code :code="compact('contractor')" />
 
-        <div class="flex-col-21">
-            <div class="flex-col-5 pad-x-5">
-                <h2 class="font-xl font-bold">История заказов</h2>
-                <p class="font-md">Список последних заказов контрагента</p>
+        @if (count($orders) > 0)
+            <div class="flex-col-21">
+                <h2 class="font-xl font-bold">История покупок</h2>
+
+                <div class="flex-col-5 pad-x-5">
+                    @foreach ($orders as $order)
+                        <div class="cut"></div>
+                        <p class="row ai-center">
+                            <a class="link col-4" href="{{ route('orders.show', $order['guid']) }}">
+                                № {{ $order['number'] }}</a>
+                            <span class="col-4 font-sm color-second">
+                                {{ $order['status'] }}</span>
+                            <span class="col-2 font-sm font-end color-second">
+                                <x-number :value="$order['itemsCount']" /> тов.</span>
+                            <span class="col-2 font-sm font-end">
+                                <x-number :value="$order['amount']" /> ₽</span>
+                        </p>
+                    @endforeach
+                </div>
+
+                <x-code :code="compact('orders')" />
             </div>
+        @endif
 
-            <div class="flex-col-5 pad-x-5">
-                @foreach ($orders as $order)
-                    <div class="cut"></div>
-                    <p class="row ai-center">
-                        <a class="link col-4" href="{{ route('orders.show', $order['guid']) }}">
-                            № {{ $order['number'] }}</a>
-                        <span class="col-4 font-sm color-second">
-                            {{ $order['status'] }}</span>
-                        <span class="col-2 font-sm font-end color-second">
-                            <x-number :value="$order['itemsCount']" /> тов.</span>
-                        <span class="col-2 font-sm font-end">
-                            <x-number :value="$order['amount']" /> ₽</span>
-                    </p>
-                @endforeach
-            </div>
-        </div>
+        @if (count($prices) > 0)
+            <div class="flex-col-21">
+                <h2 class="font-xl font-bold">Прайс по последним продажам</h2>
 
-        <div class="flex-col-21">
-            <div class="flex-col-5 pad-x-5">
-                <h2 class="font-xl font-bold">Цены предложений</h2>
-                <p class="font-md">Список последних заказов контрагента</p>
-            </div>
+                <div class="flex-col-5 pad-x-5">
+                    @foreach ($prices as $price)
+                        <div class="cut"></div>
+                        <div class="row ai-center">
+                            <a class="link col-4 flex-col" href="{{ route('offers.show', $price['offer']['guid']) }}">
+                                {{ $price['offer']['name'] }}
+                                <span
+                                    class="font-sm color-second">{{ isset($price['variant']) ? $price['variant']['name'] : '' }}</span>
+                            </a>
 
-            <div class="flex-col-5 pad-x-5">
-                @foreach ($prices as $price)
-                    <div class="cut"></div>
-                    <div class="row ai-center">
-                        <a class="link col-4 flex-col"
-                            href="{{ route('offers.show', $price['offer']['guid']) }}">
-                            {{ $price['offer']['name'] }}
-                            <span
-                                class="font-sm color-second">{{ isset($price['variant']) ? $price['variant']['name'] : '' }}</span>
-                        </a>
+                            <div class="col-2">
+                                @if ($price['order'])
+                                    <a class="link font-sm" href="{{ route('orders.show', $price['order']['guid']) }}">
+                                        {{ $price['lastSale']['date'] }}</a>
+                                @else
+                                    <span class="font-sm color-second">{{ $price['lastSale']['date'] }}</span>
+                                @endif
+                            </div>
 
-                        <div class="col-2">
-                            @if ($price['order'])
-                                <a class="link font-sm" href="{{ route('orders.show', $price['order']['guid']) }}">
-                                    {{ $price['lastSale']['date'] }}</a>
-                            @else
-                                <span class="font-sm color-second">{{ $price['lastSale']['date'] }}</span>
-                            @endif
+                            <span class="col-2 font-sm font-end color-second">
+                                <x-number :value="$price['salesCount']" /> пок</span>
+                            <span class="col-2 font-sm font-end color-second">
+                                <x-number :value="$price['totalCount']" /> {{ $price['unit'] }}</span>
+
+
+                            <span class="col-2 font-sm font-end">
+                                <x-number :value="$price['lastSale']['personalPrice']" /> ₽</span>
                         </div>
+                    @endforeach
+                </div>
 
-                        <span class="col-2 font-sm font-end color-second">
-                            <x-number :value="$price['salesCount']" /> пок</span>
-                        <span class="col-2 font-sm font-end color-second">
-                            <x-number :value="$price['totalCount']" /> {{ $price['unit'] }}</span>
-
-
-                        <span class="col-2 font-sm font-end">
-                            <x-number :value="$price['lastSale']['personalPrice']" /> ₽</span>
-                    </div>
-                @endforeach
+                <x-code :code="compact('prices')" />
             </div>
-        </div>
-
-        <x-code :code="compact('contractor', 'orders', 'prices')" />
+        @endif
     </div>
 @endsection
