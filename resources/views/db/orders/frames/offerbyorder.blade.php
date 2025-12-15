@@ -1,6 +1,6 @@
 {{-- <div class="cut mar-x-5"></div> --}}
 
-<div class="flex-row-13 ai-center">
+<div class="flex-row-13 ai-center product-card" data-offer="{{ $item['offer']['guid'] }}" data-variant="{{ $item['variant']['guid'] ?? '' }}" data-price="{{ $item['variant'] ? $item['variant']['price'] : $item['offer']['maxPrice'] }}">
     <a href="{{ route('offers.show', $item['offer']['guid']) }}" onclick="showPreloader()"
         class="flex-center bord-other bord-rad-5 back-light pad-3" style="width: 64px; height: 64px;">
         @empty($item['offer']['imageGuid'])
@@ -13,22 +13,25 @@
     </a>
 
     <div class="flex-col flex-grow pad-x-5">
-        <a class="link flex-col" href="{{ route('offers.show', $item['offerGuid']) }}">
+        <a class="link flex-col" href="{{ route('offers.show', $item['offer']['guid']) }}">
             {{ $item['offer']['name'] }}
             @isset($item['variant'])
                 <span class="font-sm color-second">{{ $item['variant']['name'] }}</span>
             @endisset
         </a>
     </div>
+                            @component('db.offers.data.counter', ['offerGuid' => $item['offer']['guid']])
+                            @endcomponent
 
     <p class="font-bold"><x-number :value="$item['variant'] ? $item['variant']['price'] : $item['offer']['maxPrice']" /> ₽</p>
+    <p class="font-bold totalPrice"></p>
 
-    <div class="flex-row-5">
+    {{-- <div class="flex-row-5">
         <form action="{{ route('basket.update', $key) }}" method="POST" class="flex-row-5 ai-center">
             @csrf
             <input type="number" data-tooltip="{{ $item['offer']['unit'] }}" name="quantity"
                 value="{{ $item['quantity'] }}" min="1" class="input font-center" style="width: 80px;">
-            {{-- <button class="button-other font-sm" data-tooltip="Сохранить" type="submit">Обновить</button> --}}
+            <button class="button-other font-sm" data-tooltip="Сохранить" type="submit">Обновить</button>
         </form>
 
         <form action="{{ route('basket.postpone', $key) }}" method="POST">
@@ -54,5 +57,5 @@
                     alt="Удалить" />
             </button>
         </form>
-    </div>
+    </div> --}}
 </div>

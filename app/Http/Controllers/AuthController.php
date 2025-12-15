@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use App\Services\ExtensionService;
 use App\Services\AntibotService;
 use App\Mail\RegistrationMail;
+use App\Mail\RestoreMail;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -67,5 +68,21 @@ class AuthController extends Controller
     {
         $request->session()->flush(); // полностью очищает сессию
         return redirect()->route('pages.main')->with('success', 'Вы вышли из профиля');
+    }
+
+    public function restore(Request $request)
+    {
+        return view('auth.restore');
+    }
+
+    public function restored(Request $request)
+    {
+        AntibotService::check($request);
+        $params = $request->all();
+
+        $email = config('settings.contacts.email');
+        Mail::to($email)->send(new RestoreMail($params));
+
+        return redirect()->route('auth.login')->with('success', 'Напрос на восстановление доступа отправлен. Мы свяжемся с вами по указанным вами контактным данным');
     }
 }

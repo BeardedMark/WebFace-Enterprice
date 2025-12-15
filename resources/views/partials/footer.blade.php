@@ -2,7 +2,7 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <div class="flex-row-8 pad-x-5">
+                <div class="flex-row-8 pad-x-13">
                     <p class="flex-col flex-grow ai-start">
                         <a class="link-second font-sm" href="{{ route('pages.main') }}">Главная</a>
                         <a class="link-second font-sm" href="{{ route('pages.about') }}">О проекте</a>
@@ -17,7 +17,7 @@
                             <a class="link-second font-sm" href="{{ route('auth.logout') }}">Выйти из профиля</a>
                         @endif
 
-                        <a class="link-second font-sm" href="{{ route('basket.index') }}">Корзина</a>
+                        <a class="link-second font-sm" href="{{ route('orders.create') }}">Корзина</a>
                     </p>
                 </div>
             </div>

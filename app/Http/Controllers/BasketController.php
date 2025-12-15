@@ -48,81 +48,92 @@ class BasketController extends Controller
 
         return view('db.orders.basket', compact('basket', 'postponed', 'basketSumm', 'postponedSumm', 'basketCount', 'postponedCount'));
     }
-
-
-    public function add(Request $request)
+    public function offerbyorder(Request $request)
     {
-        $offerGuid = $request->input('offerGuid');
-        $variantGuid = $request->input('variantGuid');
-        $quantity = (int) $request->input('quantity', 1);
-        $user = session('user');
+        $guid = $request->input('guid');
 
-        // if ($user) {
-        //     $this->extansion->AddOfferToBasket([
-        //         'userGuid' => $user['guid'],
-        //         'offerGuid' => $offerGuid,
-        //         'variantGuid' => $variantGuid,
-        //         'count' => $quantity,
-        //     ]);
-        // } else {
-            $basket = session('basket', []);
-            $key = $offerGuid . (isset($variantGuid) ? '-' . $variantGuid : '');
-
-            $basket[$key] = [
-                'offerGuid' => $offerGuid,
-                'variantGuid' => $variantGuid,
-                'quantity' => $quantity,
-            ];
-
-            session(['basket' => $basket]);
-        // }
-
-        return back()->with('success', 'Товар добавлен в корзину');
+        $guid = explode('#', $guid);
+        $variant = isset($guid[1]) ? $this->extansion->getVariant(['variantGuid' => $guid[1]]) : null;
+        $item['offer'] = $this->extansion->getOffer(['guid' => $guid[0]]);
+        $item['variant'] = $variant;
+        return view('db.orders.frames.offerbyorder', ['item' => $item]);
     }
 
-    public function update(Request $request, string $id)
-    {
-        $quantity = (int) $request->input('quantity', 1);
-        $basket = session('basket', []);
 
-        if (isset($basket[$id])) {
-            if ($quantity <= 0) {
-                unset($basket[$id]);
-            } else {
-                $basket[$id]['quantity'] = $quantity;
-            }
-        }
 
-        session(['basket' => $basket]);
+    // public function add(Request $request)
+    // {
+    //     $offerGuid = $request->input('offerGuid');
+    //     $variantGuid = $request->input('variantGuid');
+    //     $quantity = (int) $request->input('quantity', 1);
+    //     $user = session('user');
 
-        return back()->with('success', 'Корзина обновлена');
-    }
+    //     // if ($user) {
+    //     //     $this->extansion->AddOfferToBasket([
+    //     //         'userGuid' => $user['guid'],
+    //     //         'offerGuid' => $offerGuid,
+    //     //         'variantGuid' => $variantGuid,
+    //     //         'count' => $quantity,
+    //     //     ]);
+    //     // } else {
+    //         $basket = session('basket', []);
+    //         $key = $offerGuid . (isset($variantGuid) ? '-' . $variantGuid : '');
 
-    public function remove(string $id)
-    {
-        $basket = session('basket', []);
-        unset($basket[$id]);
-        session(['basket' => $basket]);
+    //         $basket[$key] = [
+    //             'offerGuid' => $offerGuid,
+    //             'variantGuid' => $variantGuid,
+    //             'quantity' => $quantity,
+    //         ];
 
-        return back()->with('success', 'Товар удалён из корзины');
-    }
+    //         session(['basket' => $basket]);
+    //     // }
 
-    public function clear()
-    {
-        session()->forget('basket');
-        return back()->with('success', 'Корзина очищена');
-    }
+    //     return back()->with('success', 'Товар добавлен в корзину');
+    // }
 
-    public function postpone(string $id)
-    {
-        $basket = session('basket', []);
+    // public function update(Request $request, string $id)
+    // {
+    //     $quantity = (int) $request->input('quantity', 1);
+    //     $basket = session('basket', []);
 
-        if (isset($basket[$id])) {
-            $basket[$id]['postponed'] = !($basket[$id]['postponed'] ?? false);
-        }
+    //     if (isset($basket[$id])) {
+    //         if ($quantity <= 0) {
+    //             unset($basket[$id]);
+    //         } else {
+    //             $basket[$id]['quantity'] = $quantity;
+    //         }
+    //     }
 
-        session(['basket' => $basket]);
+    //     session(['basket' => $basket]);
 
-        return back()->with('success', 'Статус товара изменен');
-    }
+    //     return back()->with('success', 'Корзина обновлена');
+    // }
+
+    // public function remove(string $id)
+    // {
+    //     $basket = session('basket', []);
+    //     unset($basket[$id]);
+    //     session(['basket' => $basket]);
+
+    //     return back()->with('success', 'Товар удалён из корзины');
+    // }
+
+    // public function clear()
+    // {
+    //     session()->forget('basket');
+    //     return back()->with('success', 'Корзина очищена');
+    // }
+
+    // public function postpone(string $id)
+    // {
+    //     $basket = session('basket', []);
+
+    //     if (isset($basket[$id])) {
+    //         $basket[$id]['postponed'] = !($basket[$id]['postponed'] ?? false);
+    //     }
+
+    //     session(['basket' => $basket]);
+
+    //     return back()->with('success', 'Статус товара изменен');
+    // }
 }

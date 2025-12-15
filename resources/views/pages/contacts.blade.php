@@ -9,31 +9,31 @@
                     <h1 class="font-xxl font-bold d-print-none">Контакты</h1>
                     <p class="font-lg">{{ $contacts['organization'] }}</p>
 
-                    @if ($contacts['note'])
+                    @isset ($contacts['note'])
                         <p class="font-md">{{ $contacts['note'] }}</p>
-                    @endif
+                    @endisset
                 </div>
 
                 <p class="flex-col-5 pad-x-5">
-                    @if ($contacts['title'])
+                    @isset ($contacts['title'])
                         <span class="font-lg">{{ $contacts['title'] }}</span>
-                    @endif
+                    @endisset
 
-                    @if ($contacts['geo'])
+                    @isset ($contacts['geo'])
                         <span class="font-md">{{ $contacts['geo'] }}</span>
-                    @endif
+                    @endisset
 
-                    @if ($contacts['email'])
+                    @isset ($contacts['email'])
                         <span class="font-lg">{{ $contacts['email'] }}</span>
-                    @endif
+                    @endisset
 
-                    @if ($contacts['phone'])
+                    @isset ($contacts['phone'])
                         <span class="font-lg">{{ $contacts['phone'] }}</span>
-                    @endif
+                    @endisset
 
-                    @if ($contacts['person'])
+                    @isset ($contacts['person'])
                         <span class="font-md">{{ $contacts['person'] }}</span>
-                    @endif
+                    @endisset
                 </p>
 
                 <div class="flex-row-5 d-print-none">
@@ -67,7 +67,7 @@
         </div>
     </section>
 
-    @if ($contacts['email'])
+    @isset ($contacts['email'])
         <div id="message" class="cut"></div>
 
         <section class="row g-4 d-print-none">
@@ -139,21 +139,21 @@
 
                         <p class="color-second pad-x-5 font-sm">
                             Отправляя форму вы подтверждаете свое согласие с
-                            <a class="link" href="{{ route('pages.privacy')}}">пользовательским соглашением</a>
+                            <a class="link" href="{{ route('pages.privacy') }}">пользовательским соглашением</a>
                         </p>
                     </div>
 
                     <div class="flex-row-5 jc-end">
-                            <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
+                        <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
 
                         <button class="button-main" type="submit">Отправить</button>
                     </div>
                 </form>
             </div>
         </section>
-    @endif
+    @endisset
 
-    @if ($contacts['geo'])
+    @isset ($contacts['geo'])
         <div id="geo" class="cut"></div>
 
         <section class="row g-4 d-print-none">
@@ -172,7 +172,7 @@
                 </div>
             </div>
         </section>
-    @endif
+    @endisset
 
     <x-code :code="compact('contacts')" />
 @endsection

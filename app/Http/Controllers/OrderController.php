@@ -49,23 +49,23 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         AntibotService::check($request);
-        $rawItems = session('basket');
+        // $rawItems = session('basket');
 
         $finalItems = [];
 
-        foreach ($rawItems as $key => $data) {
-            if (!empty($order['OrderGuid']) && $data['postponed']) {
-                continue;
-            }
+        // foreach ($rawItems as $key => $data) {
+        //     // if (!empty($order['OrderGuid']) && $data['postponed']) {
+        //     //     continue;
+        //     // }
 
-            // $quantity = max(1, min((int)($data['quantity'] ?? 1), 100)); // защита min/max
-            $finalItems[] = [
-                'guidOffer' => $data['offerGuid'],
-                'guidVariant' => $data['variantGuid'],
-                'count' => $data['quantity'],
-                'price' => $data['quantity'],
-            ];
-        }
+        //     // $quantity = max(1, min((int)($data['quantity'] ?? 1), 100)); // защита min/max
+        //     $finalItems[] = [
+        //         'guidOffer' => $data['offerGuid'],
+        //         'guidVariant' => $data['variantGuid'],
+        //         'count' => $data['quantity'],
+        //         'price' => $data['quantity'],
+        //     ];
+        // }
 
         $params = [
             'name' => $request['name'],
@@ -107,7 +107,7 @@ class OrderController extends Controller
             return redirect()->route('orders.show', $order['OrderGuid']);
         }
 
-        return redirect()->route('basket.index');
+        return redirect()->route('orders.create');
     }
 
     public function show(string $id)

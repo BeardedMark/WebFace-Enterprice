@@ -104,13 +104,13 @@ class PageController extends Controller
         $vcard .= "VERSION:3.0\n";
 
         // $vcard .= "N:Синельщиков;Марк;;;\n";
-        $vcard .= $contacts['title'] ? ("TITLE:" . $contacts['title'] . "\n") : '';
-        $vcard .= $contacts['phone'] ? ("TEL:+7" . $contacts['phone'] . "\n") : '';
-        $vcard .= $contacts['email'] ? ("EMAIL:" . $contacts['email'] . "\n") : '';
-        $vcard .= $contacts['person'] ? ("FN:" . $contacts['person'] . "\n") : '';
-        $vcard .= $contacts['organization'] ? ("ORG:" . $contacts['organization'] . "\n") : '';
-        $vcard .= $contacts['note'] ? ("NOTE:" . $contacts['note'] . "\n") : '';
-        $vcard .= $contacts['geo'] ? ("ADR:" . $contacts['geo'] . "\n") : '';
+        $vcard .= isset($contacts['title']) ? ("TITLE:" . $contacts['title'] . "\n") : '';
+        $vcard .= isset($contacts['phone']) ? ("TEL:+7" . $contacts['phone'] . "\n") : '';
+        $vcard .= isset($contacts['email']) ? ("EMAIL:" . $contacts['email'] . "\n") : '';
+        $vcard .= isset($contacts['person']) ? ("FN:" . $contacts['person'] . "\n") : '';
+        $vcard .= isset($contacts['organization']) ? ("ORG:" . $contacts['organization'] . "\n") : '';
+        $vcard .= isset($contacts['note']) ? ("NOTE:" . $contacts['note'] . "\n") : '';
+        $vcard .= isset($contacts['geo']) ? ("ADR:" . $contacts['geo'] . "\n") : '';
         $vcard .= "URL:" . route('pages.main') . "\n";
 
         $vcard .= "END:VCARD";

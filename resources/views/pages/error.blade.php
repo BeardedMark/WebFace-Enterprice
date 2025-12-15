@@ -30,11 +30,7 @@
             <div class="flex-col-21 ai-center jc-center">
                 <img width="128" height="128" src="https://img.icons8.com/fluency-systems-regular/128/error.png"
                     alt="web-globe" />
-
-                <p class="flex-col bord-rad-5 pad-13 bord-danger">
-                    <span class="color-danger">Код ошибки {{ $code }}</span>
-                    <span class="color-second">{{ $message }}</span>
-                </p>
+                    <span class="color-danger font-bold font-lg">{{ $code }}</span>
             </div>
         </div>
     </div>

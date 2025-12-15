@@ -5,10 +5,15 @@
         <div class="flex-col-21">
             <x-breadcrumbs :items="$breadcrumbs" />
 
-            <div class="flex-col-5 flex-grow">
+            <div class="flex-col-5 flex-grow pad-x-13">
                 <h1 class="flex-row-8 ai-end pad-x-5">
                     <span class="font-xxl font-bold flex-grow"
-                        title="Название текущей категории">{{ $catalog['name'] ?? 'Каталог' }}</span>
+                        title="Название текущей категории">
+                        {{ $catalog['name'] ?? 'Каталог' }}
+                        @if (count($offers) > 0)
+                            ({{ count($offers) }})
+                        @endif
+                    </span>
 
                     @isset($catalog['code'])
                         <span class="font-sm color-second" title="Код текущей категории">#{{ $catalog['code'] ?? '' }}</span>
@@ -19,17 +24,19 @@
                     <p class="font-lg flex-grow" title="Описание текущей категории">
                         {{ empty($catalog['name']) ? 'Корневой каталог' : 'Категория' }} товаров и предложений</p>
 
-                    @if ($catalog['totalCountOffers'] > 0)
-                        <div class="flex-row-13">
-                            <p class="font-sm flex-row-5 ai-center curs-help" data-tooltip="Товаров">
-                                <img width="20" height="20"
-                                    src="https://img.icons8.com/fluency-systems-regular/20/package-delivery-logistics.png"
-                                    alt="open-box" />
-                                {{ $catalog['countOffers'] }}
-                                {{ $catalog['totalCountOffers'] > $catalog['countOffers'] ? "/ {$catalog['totalCountOffers']}" : '' }}
-                            </p>
-                        </div>
-                    @endif
+                    <form method="GET" action="{{ url()->current() }}">
+                        <select class="input" name="sort" onchange="this.form.submit()">
+                            <option value="rating-asc" {{ request('sort') == 'rating-desc' ? 'selected' : '' }}>Популярные</option>
+                            <option value="date-asc" {{ request('sort') == 'date-asc' ? 'selected' : '' }}>Новые</option>
+                            <option value="price-asc" {{ request('sort') == 'price-asc' ? 'selected' : '' }}>Дешевые</option>
+                            <option value="price-desc" {{ request('sort') == 'price-desc' ? 'selected' : '' }}>Дорогие</option>
+                        </select>
+
+                        {{-- если у тебя в запросе есть еще параметры (например, page, search), их надо сохранить --}}
+                        @foreach (request()->except('sort') as $name => $value)
+                            <input type="hidden" name="{{ $name }}" value="{{ $value }}">
+                        @endforeach
+                    </form>
                 </div>
             </div>
         </div>

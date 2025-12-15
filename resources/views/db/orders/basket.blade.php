@@ -12,7 +12,33 @@
                         </div>
                     </div>
 
-                    @if (count($basket) > 0)
+                    <div class="flex-col-13">
+                        <div class="flex-col-5" id="cucold">
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            let localBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+                            const container = document.getElementById('cucold');
+
+                            localBasket.forEach(item => {
+                                const guid = encodeURIComponent(item.guid);
+                                const quantity = encodeURIComponent(item.quantity);
+
+                                // container.innerHTML += `<p>${quantity} ${guid}</p>`; // добавляем полученный компонент
+
+                                fetch('/basket/offerbyorder?guid=' + guid)
+                                    .then(res => res.text()) // если сервер возвращает HTML
+                                    .then(html => {
+                                        container.innerHTML += html; // добавляем полученный компонент
+                                    })
+                                    .catch(err => console.error('Ошибка запроса:', err));
+                            });
+                        });
+                    </script>
+
+                    {{-- @if (count($basket) > 0)
                         <div class="flex-col-13">
                             <div class="flex-col-5">
                                 @foreach ($basket as $key => $item)
@@ -25,9 +51,9 @@
                         <p class="font-md color-second">
                             <a href="{{ route('catalogs.index') }}" class="button-second">Наполнить корзину из каталога</a>
                         </p>
-                    @endif
+                    @endif --}}
 
-                    @if (count($postponed) > 0)
+                    {{-- @if (count($postponed) > 0)
                         <div class="flex-col-13">
                             <div class="flex-col-5 pad-x-5">
                                 <h2 class="font-xl font-bold">Отложенные товары ({{ count($postponed) }})</h2>
@@ -41,7 +67,7 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
 
@@ -74,42 +100,22 @@
                     @endempty
 
                     <div class="flex-row-5 jc-end">
-                        @if (count($basket) > 0)
-                            <form action="{{ route('basket.clear') }}" method="POST" class="flex-row-5 jc-end">
+                        {{-- @if (count($basket) > 0) --}}
+                            {{-- <form action="{{ route('basket.clear') }}" method="POST" class="flex-row-5 jc-end">
                                 @csrf
                                 @method('DELETE')
                                 <button class="button-other" type="submit">Очистить</button>
-                            </form>
+                            </form> --}}
 
                             <a href="{{ route('orders.create') }}" class="button-brand">Оформление заказа</a>
-                        @else
+                        {{-- @else --}}
                             {{-- <a href="{{ route('catalogs.index') }}" class="button-second">Подбор из каталога</a> --}}
-                        @endif
+                        {{-- @endif --}}
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section>
-        @if (count($basket) > 0)
-            <div class="flex-col-13">
-                <div class="flex-col-5 pad-x-5">
-                    <h2 class="font-xl font-bold">Рекомендумые товары ({{ count($basket) }})</h2>
-                    <p class="font-md">Список товаров готовых к заказу</p>
-                </div>
-
-                <div class="row g-4">
-                    @foreach ($basket as $key => $item)
-                        <div class="col-6 col-md-4 col-lg-3">
-                            @component('db.offers.frames.card', ['offer' => $item['offer']])
-                            @endcomponent
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <x-code :code="compact('basket', 'postponed')" />
-    </section>
+    <x-code :code="compact('basket', 'postponed')" />
 @endsection

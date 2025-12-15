@@ -14,6 +14,40 @@
 
                     <div class="flex-col-13">
                         <div class="flex-col">
+                            <label class="pad-x-5">Список товаров</label>
+                            <div id="preorder" class="flex-col"></div>
+                        </div>
+
+                        <script>
+                            // document.addEventListener('DOMContentLoaded', () => {
+                            //     let localBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+                            //     const container = document.getElementById('preorder');
+
+                            //     localBasket.forEach(item => {
+                            //         const guid = encodeURIComponent(item.guid);
+                            //         const quantity = encodeURIComponent(item.quantity);
+
+                            //         // container.innerHTML += `<p>${quantity} ${guid}</p>`;
+
+                            //     fetch('/basket/offerbyorder?guid=' + guid)
+                            //         .then(res => res.text())
+                            //         .then(html => {
+                            //             container.innerHTML += html;
+                            //             getProductCardsActions();
+                            //         })
+                            //         .catch(err => console.error('Ошибка запроса:', err));
+                            //     });
+                            // });
+                        </script>
+                    </div>
+
+
+                </div>
+            </div>
+
+            <div class="col-12 col-md-4 order-1 order-md-2 offset-md-1">
+                <div class="flex-col-21"><div class="flex-col-13">
+                        <div class="flex-col">
                             <label class="pad-x-5">Способ получения</label>
                             <div class="flex-row-8">
                                 <label class="item-other flex-row-8 flex-grow cursor-pointer"><input type="radio"
@@ -63,8 +97,7 @@
 
                         <div class="flex-col">
                             <label class="pad-x-5" for="commentary">Комментарий к заказу</label>
-                            <textarea class="input" name="commentary" id="commentary" rows="3"
-                                placeholder="Например: позвонить заранее">{{ old('commentary') }}</textarea>
+                            <textarea class="input" name="commentary" id="commentary" rows="3" placeholder="Например: позвонить заранее">{{ old('commentary') }}</textarea>
                         </div>
                     </div>
 
@@ -112,18 +145,13 @@
                             </div>
                         @endempty
                     </div>
-                </div>
-            </div>
-
-            <div class="col-12 col-md-4 order-1 order-md-2 offset-md-1">
-                <div class="flex-col-21">
                     <div class="flex-row-5 jc-end">
-                            <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
-                        <a class="button-other">Условия доставки</a>
+                        <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
+                        {{-- <a class="button-other" href="{{ route('basket.index') }}">Изменить заказ</a> --}}
+                        <button class="button-main basket-clear" type="button">Отчистить</button>
                         <button class="button-main" type="submit">Оформить заказ</button>
                     </div>
                 </div>
-
             </div>
         </form>
     </section>
