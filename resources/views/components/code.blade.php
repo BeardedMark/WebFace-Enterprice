@@ -1,5 +1,7 @@
 @if (config('settings.debug.code') && isset($code))
-    @dump($code)
+    <div class="bord-rad-5 over-hide">
+        @dump($code)
+    </div>
 
     {{-- <div class="flex-col back-main color-prime bord-rad-5 pad-13">
         @foreach ($code as $key => $value)

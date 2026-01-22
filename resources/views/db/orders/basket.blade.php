@@ -7,12 +7,99 @@
                 <div class="flex-col-34">
                     <div class="flex-col-13">
                         <div class="flex-col-5 pad-x-5">
-                            <h1 class="font-xxl font-bold">Корзина ({{ count($basket) }})</h1>
+                            <h1 class="font-xxl font-bold">Корзина</h1>
                             <p class="font-lg">Список товаров готовых к заказу</p>
                         </div>
                     </div>
 
-                    @if (count($basket) > 0)
+                    <div class="flex-col-13">
+                        <div class="flex-col-5" id="cucold">
+                            <div id="empty-basket-message" class="pad-x-5" style="display: none;">
+                                <p class="color-second">Корзина пуста</p>
+                                <a href="{{ route('catalogs.index') }}" class="button-second">Перейти в каталог</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <script>
+                        document.addEventListener('DOMContentLoaded', () => {
+                            let localBasket = JSON.parse(localStorage.getItem('basket') || '[]');
+                            const container = document.getElementById('cucold');
+                            const emptyMessage = document.getElementById('empty-basket-message');
+
+                            if (!localBasket.length) {
+                                emptyMessage.style.display = 'block';
+                                return;
+                            }
+
+                            // Создаем прелоадеры под количество товаров
+                            container.innerHTML = '';
+                            localBasket.forEach((item, index) => {
+                                container.innerHTML += `
+                                    ${index > 0 ? '<div class="cut"></div>' : ''}
+                                    <div class="flex-row-13 ai-center product-card-loading" id="preloader-${index}" style="padding: 20px; min-height: 100px; align-items: center; justify-content: center;">
+                                        <div class="preloader-spinner-small"></div>
+                                    </div>
+                                `;
+                            });
+
+                            fetch('{{ route("basket.items") }}', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                                body: JSON.stringify({ items: localBasket })
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    container.innerHTML = data.html || '';
+                                    if (!container.innerHTML.trim()) {
+                                        emptyMessage.style.display = 'block';
+                                    } else {
+                                        setTimeout(() => {
+                                            if (typeof window.getProductCardsActions === 'function') {
+                                                window.getProductCardsActions();
+                                            }
+                                            if (typeof window.updateBasketTotal === 'function') {
+                                                window.updateBasketTotal();
+                                            }
+                                        }, 200);
+                                    }
+                                } else {
+                                    emptyMessage.style.display = 'block';
+                                }
+                            })
+                            .catch(err => {
+                                console.error('Ошибка загрузки корзины:', err);
+                                emptyMessage.style.display = 'block';
+                            });
+                        });
+                    </script>
+
+                    <style>
+                        .preloader-spinner-small {
+                            width: 24px;
+                            height: 24px;
+                            border: 3px solid var(--color-other, #e5e5e5);
+                            border-top-color: var(--color-brand, #007bff);
+                            border-radius: 50%;
+                            animation: spin 0.8s linear infinite;
+                        }
+
+                        @keyframes spin {
+                            to {
+                                transform: rotate(360deg);
+                            }
+                        }
+
+                        .product-card-loading {
+                            opacity: 0.6;
+                        }
+                    </style>
+
+                    {{-- @if (count($basket) > 0)
                         <div class="flex-col-13">
                             <div class="flex-col-5">
                                 @foreach ($basket as $key => $item)
@@ -25,9 +112,9 @@
                         <p class="font-md color-second">
                             <a href="{{ route('catalogs.index') }}" class="button-second">Наполнить корзину из каталога</a>
                         </p>
-                    @endif
+                    @endif --}}
 
-                    @if (count($postponed) > 0)
+                    {{-- @if (count($postponed) > 0)
                         <div class="flex-col-13">
                             <div class="flex-col-5 pad-x-5">
                                 <h2 class="font-xl font-bold">Отложенные товары ({{ count($postponed) }})</h2>
@@ -41,24 +128,23 @@
                                 @endforeach
                             </div>
                         </div>
-                    @endif
+                    @endif --}}
                 </div>
             </div>
 
             <div class="col-12 col-md-4 offset-md-1">
-                <div class="flex-col-21">
+                <div class="flex-col-21" data-delivery-summ="{{ config('enterprice.deliverySumm', 10000) }}">
 
                     <div class="flex-col font-end pad-x-5">
-                        <p class="font-sm color-second font-end">Сумма отложенных товаров: {{ $postponedSumm }} ₽</p>
-                        @if ($basketSumm < config('enterprice.deliverySumm'))
-                            <p class="font-sm color-warning font-end">До бесплатной доставки:
-                                <x-number :value="config('enterprice.deliverySumm') - $basketSumm" /> ₽
-                            </p>
-                        @else
-                            <p class="font-sm color-success font-end">Доступна бесплатная доставка!</p>
-                        @endif
+                        <p class="font-sm color-second font-end">Сумма отложенных товаров: <span class="postponed-total">0</span> ₽</p>
+                        <p class="font-sm color-warning font-end basket-delivery-info" style="display: none;">
+                            До бесплатной доставки: <span class="delivery-remaining"></span> ₽
+                        </p>
+                        <p class="font-sm color-success font-end basket-delivery-free" style="display: none;">
+                            Доступна бесплатная доставка!
+                        </p>
                         <p class="font-lg font-end">Итого:
-                            <span class="font-bold"><x-number :value="$basketSumm" /> ₽</span>
+                            <span class="font-bold basket-total">0 ₽</span>
                         </p>
                     </div>
 
@@ -74,42 +160,22 @@
                     @endempty
 
                     <div class="flex-row-5 jc-end">
-                        @if (count($basket) > 0)
-                            <form action="{{ route('basket.clear') }}" method="POST" class="flex-row-5 jc-end">
+                        {{-- @if (count($basket) > 0) --}}
+                            {{-- <form action="{{ route('basket.clear') }}" method="POST" class="flex-row-5 jc-end">
                                 @csrf
                                 @method('DELETE')
                                 <button class="button-other" type="submit">Очистить</button>
-                            </form>
+                            </form> --}}
 
                             <a href="{{ route('orders.create') }}" class="button-brand">Оформление заказа</a>
-                        @else
+                        {{-- @else --}}
                             {{-- <a href="{{ route('catalogs.index') }}" class="button-second">Подбор из каталога</a> --}}
-                        @endif
+                        {{-- @endif --}}
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section>
-        @if (count($basket) > 0)
-            <div class="flex-col-13">
-                <div class="flex-col-5 pad-x-5">
-                    <h2 class="font-xl font-bold">Рекомендумые товары ({{ count($basket) }})</h2>
-                    <p class="font-md">Список товаров готовых к заказу</p>
-                </div>
-
-                <div class="row g-4">
-                    @foreach ($basket as $key => $item)
-                        <div class="col-6 col-md-4 col-lg-3">
-                            @component('db.offers.frames.card', ['offer' => $item['offer']])
-                            @endcomponent
-                        </div>
-                    @endforeach
-                </div>
-            </div>
-        @endif
-
-        <x-code :code="compact('basket', 'postponed')" />
-    </section>
+    <x-code :code="compact('basket', 'postponed')" />
 @endsection

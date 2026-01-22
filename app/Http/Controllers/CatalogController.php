@@ -14,11 +14,11 @@ class CatalogController extends Controller
         $this->extansion = $extansion;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $catalog = $this->extansion->cardCatalog();
         $catalogs = $this->extansion->indexCatalogs();
-        $offers = $this->extansion->indexOffers(['sort' => 'rating-desc']);
+        $offers = $this->extansion->indexOffers(['sort' => $request['sort'] ?? 'rating-desc']);
         $breadcrumbs = [['title' => 'Каталог']];
 
         return view('db.catalogs.show', compact('catalog', 'catalogs', 'offers', 'breadcrumbs'));
@@ -28,11 +28,11 @@ class CatalogController extends Controller
 
     public function store(Request $request) {}
 
-    public function show(string $id)
+    public function show(string $id, Request $request)
     {
         $catalog = $this->extansion->cardCatalog(['catalogGuid' => $id]);
         $catalogs = $this->extansion->indexCatalogs(['catalogGuid' => $id]);
-        $offers = $this->extansion->indexOffers(['catalogGuid' => $id, 'sort' => 'rating-desc']);
+        $offers = $this->extansion->indexOffers(['catalogGuid' => $id, 'sort' => $request['sort'] ?? 'rating-desc']);
 
         $breadcrumbs = [['title' => 'Каталог', 'url' => route('catalogs.index')]];
         foreach ($catalog['parents'] as $parent) {

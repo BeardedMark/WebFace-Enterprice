@@ -38,76 +38,112 @@ class OrderController extends Controller
 
         if ($user) {
             $contractors = $this->extansion->getContractorsByUser(['userGuid' => $user['guid']]);
-            $offers = session('basket', []);
-        } else {
-            $offers = session('basket', []);
         }
 
-        return view('db.orders.create', compact('offers', 'contractors'));
+        // На странице оформления товары загружаются из localStorage через JavaScript
+        // и передаются скрытыми полями в форме
+        return view('db.orders.create', compact('contractors', 'user'));
     }
 
     public function store(Request $request)
     {
         AntibotService::check($request);
-        $rawItems = session('basket');
+
+        // Получаем товары из формы (скрытые поля)
+        $formItems = $request->input('items', []);
 
         $finalItems = [];
+        $itemsForEmail = [];
 
-        foreach ($rawItems as $key => $data) {
-            if (!empty($order['OrderGuid']) && $data['postponed']) {
+        // Формируем список товаров для заказа из данных формы (серверный пересчёт)
+        foreach ($formItems as $item) {
+            $offerGuid = $item['offerGuid'] ?? null;
+            $variantGuid = $item['variantGuid'] ?? null;
+            $quantity = (int)($item['quantity'] ?? 0);
+
+            // Пропускаем отложенные и нулевое количество
+            if (($item['postponed'] ?? false) || $quantity <= 0 || empty($offerGuid)) {
                 continue;
             }
 
-            // $quantity = max(1, min((int)($data['quantity'] ?? 1), 100)); // защита min/max
+            $offer = $this->extansion->getOffer(['guid' => $offerGuid]);
+            if (empty($offer)) {
+                continue;
+            }
+
+            $variant = !empty($variantGuid) ? $this->extansion->getVariant(['variantGuid' => $variantGuid]) : null;
+            // Пересчёт цены только на сервере
+            $price = $variant ? ($variant['price'] ?? 0) : ($offer['maxPrice'] ?? 0);
+            $quantity = max(1, min($quantity, 100)); // защита min/max
+
+            // Для 1С API
             $finalItems[] = [
-                'guidOffer' => $data['offerGuid'],
-                'guidVariant' => $data['variantGuid'],
-                'count' => $data['quantity'],
-                'price' => $data['quantity'],
+                'guidOffer' => $offerGuid,
+                'guidVariant' => $variantGuid,
+                'count' => $quantity,
+                'price' => $price,
             ];
+
+            // Для email (с полной информацией)
+            $itemsForEmail[] = [
+                'guidOffer' => $offerGuid,
+                'guidVariant' => $variantGuid,
+                'offerName' => $offer['name'],
+                'variantName' => $variant ? $variant['name'] : null,
+                'count' => $quantity,
+                'price' => $price,
+                'sum' => $price * $quantity,
+                'unit' => $offer['unit'] ?? 'ед',
+            ];
+        }
+
+        // Проверяем, что есть товары для заказа
+        if (empty($finalItems)) {
+            return back()->with('error', 'Нет товаров для оформления заказа.');
         }
 
         $params = [
             'name' => $request['name'],
             'phone' => $request['phone'],
             'email' => $request['email'],
-            'inn' => $request['inn'],
-
-            'guidContractor' => $request['guidContractor'],
+            'inn' => $request['inn'] ?? null,
+            'guidContractor' => $request['guidContractor'] ?? null,
             'deliveryType' => $request['deliveryType'],
             'items' => $finalItems,
-            'addres' => $request['addres'],
-            'date' => $request['date'],
-            'fromTime' => $request['fromTime'],
-            'toTime' => $request['toTime'],
-            'commentary' => $request['commentary'],
+            'addres' => $request['addres'] ?? null,
+            'date' => $request['date'] ?? null,
+            'fromTime' => $request['fromTime'] ?? null,
+            'toTime' => $request['toTime'] ?? null,
+            'commentary' => $request['commentary'] ?? null,
         ];
 
+        $user = session('user');
+        $order = null;
 
-        if (session('user')) {
+        if ($user) {
+            // Для зарегистрированных пользователей - создаем заказ в 1С
             $order = $this->extansion->PostCustomerOrderByContractor($params);
+
+            if (!empty($order['OrderGuid'])) {
+                // Очистка корзины происходит на клиенте через JavaScript
+                // после успешного оформления заказа
+
+                return redirect()->route('orders.show', $order['OrderGuid'])
+                    ->with('success', 'Заказ успешно оформлен');
+            } else {
+                return back()->with('error', 'Ошибка при создании заказа. Попробуйте позже.');
+            }
         } else {
+            // Для незарегистрированных - отправляем на почту
+            $params['items'] = $itemsForEmail; // Используем расширенную информацию для email
             $email = config('settings.contacts.email');
             Mail::to($email)->send(new OrderMail($params));
+
+            // Очистка корзины происходит на клиенте через JavaScript
+
+            return redirect()->route('pages.main')
+                ->with('success', 'Заказ отправлен на обработку. Мы свяжемся с вами в ближайшее время.');
         }
-
-        if (!empty($order['OrderGuid'])) {
-            $oldBasket = session('basket', []);
-            $newBasket = [];
-
-            foreach ($oldBasket as $key => $item) {
-                if (!empty($item['postponed'])) {
-                    $item['postponed'] = false;
-                    $newBasket[$key] = $item;
-                }
-            }
-
-            session(['basket' => $newBasket]);
-
-            return redirect()->route('orders.show', $order['OrderGuid']);
-        }
-
-        return redirect()->route('basket.index');
     }
 
     public function show(string $id)

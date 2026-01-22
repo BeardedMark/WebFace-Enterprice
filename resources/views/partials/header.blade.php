@@ -38,23 +38,21 @@
                         {{ config('settings.contacts.phone') }}</a>
                 @endif
 
-                {{-- <a class="icon" href="{{ route('offers.compare') }}">
-                        <img width="20" height="20"
-                            src="https://img.icons8.com/fluency-systems-{{ !empty(session('compare')) && count(session('compare')) > 0 ? 'filled' : 'regular' }}/20/similar-items.png"
-                            alt="bar-chart" />
-                    </a>
-
-                    <a class="icon" href="{{ route('offers.favorites') }}">
-                        <img width="20" height="20"
-                            src="https://img.icons8.com/fluency-systems-{{ !empty(session('favorites')) && count(session('favorites')) > 0 ? 'filled' : 'regular' }}/20/bookmark-ribbon.png"
-                            alt="star--v1" />
-                    </a> --}}
-
-                <a class="icon" onclick="showPreloader()" data-tooltip="Корзина"
-                    @if (session('basket') && count(session('basket')) > 0) data-notice="{{ count(session('basket')) }}" @endif
-                    href="{{ route('basket.index') }}">
+                <a class="icon" id="header-compare" onclick="showPreloader()" data-tooltip="Сравнение" href="{{ route('offers.compare') }}">
                     <img width="20" height="20"
-                        src="https://img.icons8.com/fluency-systems-{{ !empty(session('basket')) && count(session('basket')) > 0 ? 'filled' : 'regular' }}/20/shopping-basket--v1.png"
+                        src="https://img.icons8.com/fluency-systems-regular/20/similar-items.png"
+                        alt="similar-items" />
+                </a>
+
+                <a class="icon" id="header-favorites" onclick="showPreloader()" data-tooltip="Избранное" href="{{ route('offers.favorites') }}">
+                    <img width="20" height="20"
+                        src="https://img.icons8.com/fluency-systems-regular/20/bookmark-ribbon.png"
+                        alt="bookmark-ribbon" />
+                </a>
+
+                <a class="icon" id="basket" onclick="showPreloader()" data-tooltip="Корзина" href="{{ route('basket.index') }}">
+                    <img width="20" height="20"
+                        src="https://img.icons8.com/fluency-systems-regular/20/shopping-basket--v1.png"
                         alt="shopping-basket--v1" />
                 </a>
 

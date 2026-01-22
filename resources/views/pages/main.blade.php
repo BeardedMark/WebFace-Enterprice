@@ -75,10 +75,12 @@
     <section class="row g-4 ai-center">
         <div class="col">
             <div class="flex-col-34">
-                <div class="flex-col-8 pad-x-13">
+                    <x-header tag='h2' size='xxl' color='brand' title="Хиты продаж"
+                        description="Товары которые имеют наивысшую популярность" />
+                {{-- <div class="flex-col-8 pad-x-13">
                     <h2 class="font-xl font-bold">Хиты продаж</h2>
                     <p class="font-lg">Товары которые имеют наивысшую популярность</p>
-                </div>
+                </div> --}}
 
                 <div class="row g-4">
                     @foreach ($topOffers as $topOffer)
@@ -127,10 +129,12 @@
     <section class="row g-4 ai-center">
         <div class="col">
             <div class="flex-col-34">
-                <div class="flex-col-8 pad-x-13">
+                    <x-header tag='h2' size='xxl' color='brand' title="Наши новинки"
+                        description="Новые позиции в нашем ассортименте" />
+                {{-- <div class="flex-col-8 pad-x-13">
                     <h2 class="font-xl font-bold">Наши новинки</h2>
                     <p class="font-lg">Новые позиции в нашем ассортименте</p>
-                </div>
+                </div> --}}
 
                 <div class="row g-4">
                     @foreach ($newOffers as $newOffer)

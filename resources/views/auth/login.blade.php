@@ -1,56 +1,49 @@
 @extends('layouts.container')
 
 @section('container-content')
-    <section class="flex-col-21">
-
+    <section class="flex-col-34">
         <div class="row g-4 jc-center">
-            <div class="col-12 col-md-7 order-2 order-md-1">
-                <div class="flex-col-34">
-                    <div class="flex-col-5 pad-x-5">
-                        <h1 class="font-xxl font-bold">Вход в профиль</h1>
-                        <p class="font-lg">Авторизация на сайте для доступа к своим организациям</p>
+            <div class="col-12 col-lg-4 order-2 order-lg-1">
+                <div class="flex-col-21">
+                    <x-header tag='h1' size='xxl' title="Вход в профиль"
+                        description="Авторизация на сайте для доступа к личному кабинету"
+                        note="Войдите в свой персональный профиль что бы получить доступ к расширеному функционалу сайта" />
+
+                    <div class="flex-row-5 pad-x-8">
+                        <a class="button-second" href="{{ route('auth.register') }}">Регистрация</a>
+                        <a class="button-other" href="{{ route('auth.restore') }}">Восстановить данные</a>
                     </div>
-
-                    <form class="flex-col-21" action="{{ route('auth.login') }}" method="POST">
-                        @csrf
-
-                        <div class="flex-col-8">
-                            <div class="flex-col">
-                                <label class="pad-x-5" for="login">Имя пользователя
-                                    <span class="color-danger">*</span></label>
-                                <input class="input" type="text" name="login" id="login"
-                                    value="{{ old('login') }}" placeholder="Персональный логин для входа в систему"
-                                    required>
-                            </div>
-
-                            <div class="flex-col">
-                                <label class="pad-x-5" for="password">Пароль пользователя
-                                    <span class="color-danger">*</span></label>
-                                <input class="input" type="password" name="password" id="password"
-                                    value="{{ old('password') }}"
-                                    placeholder="Обычно имеет от 6 символов, содержит буквы в нижнем и верхнем регистре, числа и символы"
-                                    required>
-                            </div>
-
-                        </div>
-
-                        <div class="flex-row-5 jc-end">
-                            <span class="ai-center flex-grow pad-x-5"><x-antibot /></span>
-
-                            <a class="item-other color-danger" href="{{ route('auth.logout') }}">Выйти из профиля</a>
-                            <a class="button-other" href="{{ route('pages.privacy') }}">Восстановить данные</a>
-                            <a class="button-second" href="{{ route('auth.register') }}">Регистрация</a>
-                            <button class="button-main" type="submit">Войти</button>
-                        </div>
-                    </form>
                 </div>
             </div>
 
-            <div class="col-12 col-md-4 order-1 order-md-2 offset-md-1">
-                <div class="flex-col jc-center ai-center">
-                    <img width="128" height="128" src="https://img.icons8.com/fluency-systems-regular/128/enter-2.png"
-                        alt="enter-2" />
-                </div>
+            <div class="col order-1 order-lg-2 offset-lg-1">
+                <form class="flex-col-21 pad-x-8" action="{{ route('auth.login') }}" method="POST">
+                    @csrf
+
+                    <div class="flex-col-8">
+                        <div class="flex-col">
+                            <label class="pad-x-5" for="login">Имя пользователя
+                                <span class="color-danger">*</span></label>
+                            <input class="input" type="text" name="login" id="login" value="{{ old('login') }}"
+                                placeholder="Персональный логин для входа в систему" required>
+                        </div>
+
+                        <div class="flex-col">
+                            <label class="pad-x-5" for="password">Пароль пользователя
+                                <span class="color-danger">*</span></label>
+                            <input class="input" type="password" name="password" id="password"
+                                value="{{ old('password') }}"
+                                placeholder="Обычно имеет от 6 символов, содержит буквы в нижнем и верхнем регистре, числа и символы"
+                                required>
+                        </div>
+
+                    </div>
+
+                    <div class="flex-row-5 jc-end ai-center">
+                        <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
+                        <button class="button-main" type="submit">Войти</button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>

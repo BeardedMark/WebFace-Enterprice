@@ -56,46 +56,36 @@ class OfferController extends Controller
 
     public function favorites()
     {
-        $ids = session('favorites', []);
-
+        // Данные избранного хранятся в localStorage на клиенте
+        // На сервере просто возвращаем пустой список
         $offers = [];
-
         return view('db.offers.favorites', compact('offers'));
-    }
-
-    // Добавление/удаление из избранного
-    public function toggleFavorite(string $id)
-    {
-        $favorites = session()->get('favorites', []);
-        if (in_array($id, $favorites)) {
-            $favorites = array_values(array_diff($favorites, [$id]));
-        } else {
-            $favorites[] = $id;
-        }
-        session(['favorites' => $favorites]);
-
-        return back();
     }
 
     public function compare()
     {
-        $ids = session('compare', []);
-
+        // Данные сравнения хранятся в localStorage на клиенте
+        // На сервере просто возвращаем пустой список
         $offers = [];
-
         return view('db.offers.compare', compact('offers'));
     }
 
-    public function toggleCompare(string $id)
+    // Batch endpoint для получения товаров из избранного и сравнения
+    public function items(Request $request)
     {
-        $compare = session()->get('compare', []);
-        if (in_array($id, $compare)) {
-            $compare = array_values(array_diff($compare, [$id]));
-        } else {
-            $compare[] = $id;
-        }
-        session(['compare' => $compare]);
+        $guids = $request->input('guids', []);
+        $items = [];
 
-        return back();
+        foreach ($guids as $guid) {
+            $offer = $this->extansion->getOffer(['guid' => $guid]);
+            if ($offer) {
+                $items[] = [
+                    'guid' => $guid,
+                    'offer' => $offer,
+                ];
+            }
+        }
+
+        return response()->json(['items' => $items]);
     }
 }

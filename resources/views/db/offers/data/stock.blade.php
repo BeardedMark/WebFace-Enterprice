@@ -1,10 +1,8 @@
 @if (isset($totalStock) && $totalStock > 0)
-    @if ($freeStock <= 0)
-        Нет в наличии
-    @elseif ($freeStock <= 1)
+    @if ($freeStock <= 10)
         Мало
     @else
-        {{ $freeStock ?? '' }}
+        <x-number :value="$freeStock" />
     @endif
 
     {{ $unit ?? '' }}
