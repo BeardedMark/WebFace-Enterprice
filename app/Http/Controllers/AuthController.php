@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use App\Services\ExtensionService;
 use App\Services\AntibotService;
 use App\Mail\RegistrationMail;
 use App\Mail\RestoreMail;
@@ -12,18 +10,11 @@ use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
-    protected $extansion;
-
-    public function __construct(ExtensionService $extansion)
-    {
-        $this->extansion = $extansion;
-    }
-
     public function main(Request $request)
     {
         $userGuid = session('user')['guid'];
 
-        $user = $this->extansion->cardUserByGuid(['guid' => $userGuid]);
+        $user = $this->etp->GetUserCard(['guid' => $userGuid]);
         session(['user' => $user]);
 
         return view('auth.main', compact('user'));
@@ -38,7 +29,7 @@ class AuthController extends Controller
     {
         AntibotService::check($request);
 
-        $user = $this->extansion->loginUser(['login' => $request['login'], 'password' => $request['password']]);
+        $user = $this->etp->LoginUser(['login' => $request['login'], 'password' => $request['password']]);
         session([
             'user' => [
                 'guid' => $user['guid']
@@ -58,10 +49,12 @@ class AuthController extends Controller
         AntibotService::check($request);
         $params = $request->all();
 
-        $email = config('settings.contacts.email');
+        $this->etp->RegisterUser(['name' => $request['name'], 'login' => $request['login'], 'password' => $request['password']]);
+
+        $email = $this->etp->GetBaseData()['email'];
         Mail::to($email)->send(new RegistrationMail($params));
 
-        return redirect()->route('auth.login');
+        return redirect()->route('auth.login')->with('success', 'Запрос за авторизацию отправлен, менеджер с вами свяжется');
     }
 
     public function logout(Request $request)
@@ -80,7 +73,7 @@ class AuthController extends Controller
         AntibotService::check($request);
         $params = $request->all();
 
-        $email = config('settings.contacts.email');
+        $email = $this->etp->GetBaseData()['email'];
         Mail::to($email)->send(new RestoreMail($params));
 
         return redirect()->route('auth.login')->with('success', 'Напрос на восстановление доступа отправлен. Мы свяжемся с вами по указанным вами контактным данным');

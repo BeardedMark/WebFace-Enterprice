@@ -1,6 +1,6 @@
-<div class="flex-col-8 pad-x-13">
+<div class="flex-col-5 pad-x-13 flex-grow">
     @isset($title)
-        <{{ $tag ?? 'p'}} class="font-{{ $size ?? 'lg'}}">
+        <{{ $tag ?? 'p'}} class="font-{{ $size ?? 'lg'}} color-brand">
             {{ $title }}
         </{{ $tag ?? 'p'}}>
     @endisset
@@ -10,6 +10,6 @@
     @endisset
 
     @isset($note)
-        <p class="font-md color-main">{{ $note }}</p>
+        <p class="font-md color-second">{{ $note }}</p>
     @endisset
 </div>

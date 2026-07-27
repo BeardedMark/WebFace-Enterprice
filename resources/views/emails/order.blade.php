@@ -11,9 +11,9 @@
 
 <p>
     <b>Способ получения:</b> {{ $params['deliveryType'] === 'delivery' ? 'Доставка' : 'Самовывоз' }}<br>
-    
+
     @if ($params['deliveryType'] === 'delivery')
-        @if (!empty($params['addres']))
+        @if (!empty($params['address']))
             <b>Адрес доставки:</b> {{ $params['addres'] }}<br>
         @endif
 
@@ -22,7 +22,7 @@
         @endif
 
         @if (!empty($params['fromTime']) || !empty($params['toTime']))
-            <b>Время доставки:</b> 
+            <b>Время доставки:</b>
             @if (!empty($params['fromTime']) && !empty($params['toTime']))
                 с {{ $params['fromTime'] }} по {{ $params['toTime'] }}
             @elseif (!empty($params['fromTime']))

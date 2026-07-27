@@ -17,7 +17,11 @@
             </div>
 
             <div class="col order-1 order-lg-2 offset-lg-1">
-                <form class="flex-col-21 pad-x-8" action="{{ route('auth.login') }}" method="POST">
+                <div class="pad-x-8">
+                    @component('auth.frames.login-form')
+                    @endcomponent
+                </div>
+                {{-- <form class="flex-col-21 pad-x-8" action="{{ route('auth.login') }}" method="POST">
                     @csrf
 
                     <div class="flex-col-8">
@@ -43,7 +47,7 @@
                         <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
                         <button class="button-main" type="submit">Войти</button>
                     </div>
-                </form>
+                </form> --}}
             </div>
         </div>
     </section>

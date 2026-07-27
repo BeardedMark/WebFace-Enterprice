@@ -2,7 +2,7 @@
     onclick="showPreloader()">
 
     @isset($image)
-        <div class="img-cover back-light"  style="height: {{ $height ?? '200px' }}">
+        <div class="img-cover back-light"  style="height: {{ $height ?? '230px' }}">
             <img src="{{ $image }}" alt="{{ $image }}" />
         </div>
     @endisset

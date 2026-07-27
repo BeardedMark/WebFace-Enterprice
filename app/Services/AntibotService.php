@@ -25,7 +25,7 @@ class AntibotService
         $formEnd   = now()->getTimestampMs(); // текущее время в ms
         $diffSec   = ($formEnd - $formStart) / 1000;
 
-        if ($diffSec < 5) {
+        if ($diffSec < 2) {
             throw ValidationException::withMessages([
                 'form' => 'Слишком быстро отправлена форма. Подтвердите, что вы человек',
             ]);

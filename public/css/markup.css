@@ -6,12 +6,12 @@
     --color-warning: #DBA710;
     --color-danger: #F88070;
 
-    --color-brand: #BA8258;
+    --color-brand: #BA8A61;
     /* --color-brand: #7B61FF; */
     /* --color-brand: #2780F0; */
     --color-accent: #F0C875;
 
-    --color-prime: #FCFBFB;
+    --color-prime: #fafafa;
     --color-second: #a3a4ac;
     --color-main: #303338;
     --color-other: #EFEDEB;
@@ -196,6 +196,9 @@
 .flex-center {display: flex; justify-content: center; align-items: center;}
 .jc-center {justify-content: center;}
 .jc-end {justify-content: end;}
+.jc-btw {justify-content: space-between;}
+.jc-ar {justify-content: space-around;}
+.jc-ev {justify-content: space-evenly;}
 .ai-start {align-items: start;}
 .ai-center {align-items: center;}
 .ai-end {align-items: end;}
@@ -310,4 +313,16 @@
     max-width: 100%;
     max-height: 100%;
     object-fit: cover;
+}
+
+.separator {
+    /* height: 0; */
+    flex-grow: 1;
+    border-bottom: 1px dotted var(--color-other);
+    /* margin: 5px 0; */
+    transition: .3s;
+}
+
+*:hover>.separator {
+    border-bottom: 1px dotted var(--color-second);
 }

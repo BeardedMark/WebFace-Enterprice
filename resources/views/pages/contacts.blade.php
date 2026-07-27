@@ -1,54 +1,45 @@
 @extends('layouts.container')
-@section('title', 'Контакты')
+@section('title', $meta['title'])
+@section('description', $meta['description'])
+@section('canonical', $meta['canonical'])
 
 @section('container-content')
+    <x-code :code="compact('page', 'meta')" />
+
     <section class="row g-4">
         <div class="col">
             <div class="flex-col-34">
-                <div class="flex-col-8 pad-x-5">
-                    <h1 class="font-xxl font-bold d-print-none">Контакты</h1>
-                    <p class="font-lg">{{ $contacts['organization'] }}</p>
 
-                    @isset ($contacts['note'])
-                        <p class="font-md">{{ $contacts['note'] }}</p>
-                    @endisset
-                </div>
+                <x-header tag='h1' size='xxl' color='brand' :title="$page['data']['header']" :description="$page['data']['description']" :note="$page['data']['content']" />
 
-                <p class="flex-col-5 pad-x-5">
-                    @isset ($contacts['title'])
-                        <span class="font-lg">{{ $contacts['title'] }}</span>
-                    @endisset
+                <div class="flex-col-21">
+                    <p class="flex-col-5 pad-x-13">
+                        @isset($baseData['email'])
+                            <span class="font-lg">{{ $baseData['email'] }}</span>
+                        @endisset
 
-                    @isset ($contacts['geo'])
-                        <span class="font-md">{{ $contacts['geo'] }}</span>
-                    @endisset
+                        @isset($baseData['phone'])
+                            <span class="font-lg">{{ $baseData['phone'] }}</span>
+                        @endisset
+                    </p>
 
-                    @isset ($contacts['email'])
-                        <span class="font-lg">{{ $contacts['email'] }}</span>
-                    @endisset
+                    <p class="flex-col pad-x-13">
+                        @isset($baseData['address'])
+                            <span class="font-sm">{{ $baseData['address'] }}</span>
+                        @endisset
+                    </p>
 
-                    @isset ($contacts['phone'])
-                        <span class="font-lg">{{ $contacts['phone'] }}</span>
-                    @endisset
 
-                    @isset ($contacts['person'])
-                        <span class="font-md">{{ $contacts['person'] }}</span>
-                    @endisset
-                </p>
+                    <div class="flex-row-5 d-print-none pad-x-8">
+                        @foreach ($baseData['links'] as $link)
+                            <x-linkicon href="{{ $link['url'] }}">{{ $link['title'] }}</x-linkicon>
+                        @endforeach
 
-                <div class="flex-row-5 d-print-none">
-                    {{-- <button class="icon" data-tooltip="Копировать" onclick="window.print()"><img width="20"
-                            height="20" src="https://img.icons8.com/fluency-systems-regular/20/copy.png"
-                            alt="copy" /></button> --}}
-
-                    <button class="icon" data-tooltip="Печать" onclick="window.print()"><img width="20" height="20"
-                            src="https://img.icons8.com/fluency-systems-regular/20/print.png" alt="print" /></button>
-
-                    {{-- <button class="icon" data-tooltip="Скачать" onclick="window.print()"><img width="20"
-                            height="20" src="https://img.icons8.com/fluency-systems-regular/20/download.png"
-                            alt="download" /></button> --}}
-
-                    <x-share />
+                        {{-- <button class="icon" data-tooltip="Печать" onclick="window.print()"><img width="20"
+                                height="20" src="https://img.icons8.com/fluency-systems-regular/20/print.png"
+                                alt="print" /></button>
+                        <x-share /> --}}
+                    </div>
                 </div>
             </div>
         </div>
@@ -67,52 +58,19 @@
         </div>
     </section>
 
-    @isset ($contacts['email'])
+    @isset($baseData['email'])
         <div id="message" class="cut"></div>
 
         <section class="row g-4 d-print-none">
             <div class="col">
                 <div class="flex-col-34">
-                    <div class="flex-col-8 pad-x-5">
-                        <h2 class="font-xl font-bold">Отправить сообщение</h2>
-                        <p class="font-lg">Мы открыты для связи. Отправте нам сообщение удобным для вас способом</p>
-                    </div>
-
-                    <div class="flex-row-5">
-                        @if ($messangers['telegram'])
-                            <a class="icon" data-tooltip="Telegram" target="_blink"
-                                href="https://t.me/+{{ $messangers['telegram'] }}">
-                                <img width="20" height="20"
-                                    src="https://img.icons8.com/fluency-systems-regular/20/telegram-app.png"
-                                    alt="telegram-app" />
-                            </a>
-                        @endif
-
-                        @if ($messangers['whatsapp'])
-                            <a class="icon" data-tooltip="WhatsApp" target="_blink"
-                                href="https://wa.me/+{{ $messangers['whatsapp'] }}">
-                                <img width="20" height="20"
-                                    src="https://img.icons8.com/fluency-systems-regular/20/whatsapp.png" alt="whatsapp" />
-                            </a>
-                        @endif
-
-                        @if ($messangers['vkontakte'])
-                            <a class="icon" data-tooltip="ВКонтакте" target="_blink"
-                                href="https://vk.me/{{ $messangers['vkontakte'] }}">
-                                <img width="20" height="20"
-                                    src="https://img.icons8.com/fluency-systems-regular/20/vkontakte.png" alt="vkontakte" />
-                            </a>
-                        @endif
-
-                        <a class="icon" data-tooltip="Email" href="mailto:{{ $contacts['email'] }}">
-                            <img width="20" height="20"
-                                src="https://img.icons8.com/fluency-systems-regular/20/email.png" alt="email" /></a>
-                    </div>
+                    <x-header tag='h2' size='xl' color='brand' title="Отправить сообщение"
+                        description="Мы открыты для связи" note="Отправте нам сообщение удобным для вас способом" />
                 </div>
             </div>
 
             <div class="col col-12 col-md-6 offset-md-1">
-                <form class="flex-col-21" action="{{ route('pages.message') }}" method="POST">
+                <form class="flex-col-21 pad-x-8" action="{{ route('pages.message') }}" method="POST">
                     @csrf
 
                     <div class="flex-col-13">
@@ -153,20 +111,18 @@
         </section>
     @endisset
 
-    @isset ($contacts['geo'])
+    @isset($baseData['address'])
         <div id="geo" class="cut"></div>
 
         <section class="row g-4 d-print-none">
             <div class="col-12">
                 <div class="flex-col-34">
-                    <div class="flex-col-8 pad-x-5">
-                        <h2 class="font-xl font-bold d-print-none">Где мы находимся</h2>
-                        <p class="font-lg">{{ $contacts['geo'] }}</p>
-                    </div>
+                    <x-header tag='h2' size='xl' color='brand' title="Мы на карте"
+                        description="Где фактически мы находимся" :note="$baseData['address']" />
 
                     <iframe class="bord-rad-13 back-other bord-other w-100" height="500" loading="lazy" allowfullscreen
                         referrerpolicy="no-referrer-when-downgrade"
-                        src="https://www.google.com/maps?q={{ $contacts['geo'] }}<&output=embed">
+                        src="https://www.google.com/maps?q={{ $baseData['address'] }}<&output=embed">
                     </iframe>
 
                 </div>
@@ -174,5 +130,9 @@
         </section>
     @endisset
 
-    <x-code :code="compact('contacts')" />
+    @isset($page['data']['content'])
+        <section class="html pad-x-13">
+            {!! $page['data']['content'] !!}
+        </section>
+    @endisset
 @endsection

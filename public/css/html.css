@@ -1,0 +1,126 @@
+.html {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: #222;
+    /* white-space: break-spaces; */
+}
+
+/* Заголовки */
+.html h1,
+.html h2,
+.html h3,
+.html h4,
+.html h5,
+.html h6 {
+    margin: 1.2em 0 0.6em;
+    font-weight: 600;
+    line-height: 1.3;
+}
+
+.html h1 { font-size: 28px; }
+.html h2 { font-size: 24px; }
+.html h3 { font-size: 20px; }
+.html h4 { font-size: 18px; }
+.html h5 { font-size: 16px; }
+.html h6 { font-size: 14px; }
+
+/* Текст */
+.html p {
+    margin: 0 0 1em;
+}
+
+/* Ссылки */
+.html a {
+    color: #2563eb;
+    text-decoration: none;
+}
+
+.html a:hover {
+    text-decoration: underline;
+}
+
+/* Списки */
+.html ul,
+.html ol {
+    margin: 0 0 1em 1.5em;
+    padding: 0;
+    list-style: disc;
+}
+
+.html li {
+    margin-bottom: 0.4em;
+}
+
+/* Таблицы */
+.html table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1em 0;
+}
+
+.html th,
+.html td {
+    /* border: 1px solid #ddd; */
+    border-color: #ddd;
+    border-style: solidege;
+    padding: 8px;
+    text-align: left;
+}
+
+.html th {
+    background: #f5f5f5;
+    font-weight: 600;
+}
+
+/* Изображения */
+.html img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 1em 0;
+}
+
+/* Цитаты */
+.html blockquote {
+    margin: 1em 0;
+    padding-left: 1em;
+    border-left: 3px solid #ddd;
+    color: #555;
+}
+
+/* Код */
+.html code {
+    background: #f3f3f3;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: monospace;
+}
+
+.html pre {
+    background: #f3f3f3;
+    padding: 10px;
+    overflow-x: auto;
+    border-radius: 6px;
+}
+
+/* Разделители */
+.html hr {
+    border: none;
+    border-top: 1px solid #ddd;
+    margin: 2em 0;
+}
+
+/* Формы */
+.html input,
+.html textarea,
+.html select,
+.html button {
+    font-family: inherit;
+    font-size: 14px;
+    padding: 6px 8px;
+    margin: 4px 0;
+}
+
+.html button {
+    cursor: pointer;
+}

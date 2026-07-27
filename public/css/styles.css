@@ -7,6 +7,7 @@ body {
 .cut {
     height: 1px;
     background-color: var(--color-other);
+    /* border-bottom: 2px solid var(--color-light); */
 }
 
 .frame,
@@ -203,7 +204,7 @@ body {
 .item-prime {
     height: 33px;
     display: inline-flex;
-    /* gap: 5px; */
+    gap: 8px;
     align-items: center;
     border-radius: 5px;
     padding: 5px 13px;

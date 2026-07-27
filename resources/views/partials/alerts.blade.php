@@ -5,7 +5,7 @@
     session()->has('info') ||
     $errors->any()
 )
-    <div id="alerts-container" class="flex-col-8 ai-end pad-21 pos-fix" style="top: 0; right: 0;">
+    <div id="alerts-container" class="flex-col-8 ai-end pos-fix" style="top: 73px; right: 21px;">
         {{-- Flash-сообщения --}}
         @foreach (['success' => 'success', 'error' => 'danger', 'warning' => 'warning', 'info' => 'main'] as $type => $color)
             @if (session($type))
@@ -50,7 +50,7 @@
         document.querySelectorAll('[data-alert]').forEach((el) => {
             setTimeout(() => {
                 el.remove();
-            }, 5000); // автоудаление через 5 секунд
+            }, 8000); // автоудаление через 8 секунд
         });
     });
 </script>

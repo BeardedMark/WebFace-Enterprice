@@ -12,7 +12,7 @@
 
                     <div class="flex-row-5 pad-x-8">
                         <a class="button-second" href="{{ route('auth.login') }}">Вход</a>
-                        <a class="button-other" href="{{ route('pages.privacy') }}">Политика конфедициальности</a>
+                        <a class="button-other" href="{{ route('pages.privacy') }}">Политика конфиденциальности</a>
                     </div>
                 </div>
             </div>
@@ -23,8 +23,13 @@
 
                     <div class="flex-col-8">
                         <div class="flex-col">
-                            <label class="pad-x-5" for="name">Логин <span class="color-danger">*</span></label>
+                            <label class="pad-x-5" for="name">Имя<span class="color-danger">*</span></label>
                             <input class="input" type="text" name="name" id="name" value="{{ old('name') }}"
+                                placeholder="Как вас зовут" required>
+                        </div>
+                        <div class="flex-col">
+                            <label class="pad-x-5" for="login">Логин <span class="color-danger">*</span></label>
+                            <input class="input" type="text" name="login" id="login" value="{{ old('login') }}"
                                 placeholder="Будет использоваться для входа" required>
                         </div>
 
@@ -64,7 +69,7 @@
 
                     <div class="flex-row-5 jc-end">
                         <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
-                        <button class="button-main" type="submit">Зарегестрироваться</button>
+                        <button class="button-main" type="submit">Зарегистрироваться</button>
                     </div>
                 </form>
             </div>

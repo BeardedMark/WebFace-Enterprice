@@ -260,11 +260,11 @@
     };
 
     document.addEventListener("DOMContentLoaded", () => {
-        showPreloader();
+        // showPreloader();
     });
 
     window.addEventListener("load", () => {
-        hidePreloader();
+        // hidePreloader();
     });
 
     window.addEventListener('pageshow', (event) => {

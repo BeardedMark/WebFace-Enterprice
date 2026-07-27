@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
-use App\Services\ExtensionService;
 use App\Services\AntibotService;
+use Illuminate\Support\Facades\Http;
 
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Encoding\Encoding;
@@ -18,51 +17,19 @@ use Illuminate\Support\Facades\Mail;
 
 class PageController extends Controller
 {
-    protected $extansion;
-
-    public function __construct(ExtensionService $extansion)
-    {
-        $this->extansion = $extansion;
-    }
-
     public function main()
     {
-        $stats = []; //$this->extansion->getBaseStatistics();
-
-        $topOffers = $this->extansion->indexOffers(['sort' => 'rating-desc', 'hierarchy' => true, 'limit' => 4]);
-        $newOffers = $this->extansion->indexOffers(['sort' => 'createDate-desc', 'hierarchy' => true, 'limit' => 4]);
-        $randomOffers = $this->extansion->indexOffers(['sort' => 'price-desc', 'hierarchy' => true, 'limit' => 12]);
-
-        $popularBrands = [
-            [
-                'title' => 'Комус',
-                'description' => 'Упаковка и канцтовары',
-                'link' => 'https://komus.ru/',
-                'offersCount' => '100 000',
-                'image' => 'https://dnlmarket.ru/upload/iblock/b2c/b2ca4c463330671dee4c20510b98b85f.jpg'
-            ],
-            [
-                'title' => 'Grass',
-                'description' => 'Средства уборки и гигиены',
-                'link' => 'https://grass.su/',
-                'offersCount' => '10 000',
-                'image' => 'https://dnlmarket.ru/upload/iblock/6f8/6f8f6d2a1779e7b429abc850e5f884f9.jpg'
-            ],
-            [
-                'title' => 'Focus',
-                'description' => 'Бумажная продукция',
-                'link' => 'https://www.focusprofessional.ru/',
-                'offersCount' => '1 000',
-                'image' => 'https://dnlmarket.ru/upload/iblock/4f0/4f03b4e2eeb6eff59bc9d6fc998e8c81.jpg'
-            ],
-            [
-                'title' => 'Upax-unity',
-                'description' => 'Пищевая упаквока',
-                'link' => 'https://upax.ru/',
-                'offersCount' => '100',
-                'image' => 'https://dnlmarket.ru/upload/iblock/ac5/ac5dd5f16030dcf09ec99cc2265c7e5f.jpg'
-            ]
+        $recommendedOffers = [
+            // $this->etp->GetOfferCard('12f92710-632e-11ec-80c8-00155d588b1f'),
+            // $this->etp->GetOfferCard('b5a53957-6218-11ec-80c8-00155d588b1f'),
+            // $this->etp->GetOfferCard('f9da1a69-7296-11ec-80bd-00155d62f000'),
+            // $this->etp->GetOfferCard('84b1206d-64a2-11ec-80c8-00155d588b1f')
         ];
+
+        // $topOffers = $this->etp->GetOffersList(['sort' => 'rating-desc', 'hierarchy' => true, 'limit' => 8]);
+        // $newOffers = $this->etp->GetOffersList(['sort' => 'createDate-desc', 'hierarchy' => true, 'limit' => 8]);
+
+        $page = $this->etp->GetMainPage();
 
         $moreLinks = [
             [
@@ -72,7 +39,7 @@ class PageController extends Controller
                 'icon' => 'https://img.icons8.com/fluency-systems-regular/32/faq.png'
             ],
             [
-                'title' => 'Наши приемущества',
+                'title' => 'Наши преимущества',
                 'description' => 'То, что отличает нас от остальных в нашей сфере',
                 'link' => route('pages.about') . '#advantages',
                 'icon' => 'https://img.icons8.com/fluency-systems-regular/32/star--v1.png'
@@ -85,32 +52,47 @@ class PageController extends Controller
             ]
         ];
 
-        return view('pages.main', compact('popularBrands', 'topOffers', 'newOffers', 'randomOffers', 'moreLinks'));
+        $meta = [
+            'title' => $page['data']['seoTitle'] ?? $page['data']['header'] ?? 'Главная страница',
+            'description' => $page['data']['seoDescription'] ?? $page['data']['description'] ?? null,
+            'canonical' => route('pages.main')
+        ];
+
+        return view('pages.main', compact('page', 'moreLinks', 'recommendedOffers', 'meta'));
     }
 
     public function about()
     {
-        return view('pages.about');
+        $page = $this->etp->GetAboutPage();
+
+        $meta = [
+            'title' => $page['data']['seoTitle'] ?? $page['data']['header'] ?? 'Страница описания',
+            'description' => $page['data']['seoDescription'] ?? $page['data']['description'] ?? null,
+            'canonical' => route('pages.about')
+        ];
+
+        return view('pages.about', compact('page', 'meta'));
     }
 
     public function contacts()
     {
-        $organisation = []; //$this->extansion->getBaseStatistics();
+        $page = $this->etp->GetContactsPage();
+        $baseData = $this->etp->GetBaseData();
 
-        $contacts = config('settings.contacts');
-        $messangers = config('settings.messangers');
+        $contact = $page['organization'];
 
         $vcard = "BEGIN:VCARD\n";
         $vcard .= "VERSION:3.0\n";
 
         // $vcard .= "N:Синельщиков;Марк;;;\n";
-        $vcard .= isset($contacts['title']) ? ("TITLE:" . $contacts['title'] . "\n") : '';
-        $vcard .= isset($contacts['phone']) ? ("TEL:+7" . $contacts['phone'] . "\n") : '';
-        $vcard .= isset($contacts['email']) ? ("EMAIL:" . $contacts['email'] . "\n") : '';
-        $vcard .= isset($contacts['person']) ? ("FN:" . $contacts['person'] . "\n") : '';
-        $vcard .= isset($contacts['organization']) ? ("ORG:" . $contacts['organization'] . "\n") : '';
-        $vcard .= isset($contacts['note']) ? ("NOTE:" . $contacts['note'] . "\n") : '';
-        $vcard .= isset($contacts['geo']) ? ("ADR:" . $contacts['geo'] . "\n") : '';
+        $vcard .= isset($baseData['name']) ? ("N:" . $baseData['name'] . "\n") : '';
+        $vcard .= isset($baseData['description']) ? ("TITLE:" . $baseData['description'] . "\n") : '';
+        $vcard .= isset($baseData['phone']) ? ("TEL:" . $baseData['phone'] . "\n") : '';
+        $vcard .= isset($baseData['email']) ? ("EMAIL:" . $baseData['email'] . "\n") : '';
+        $vcard .= isset($baseData['address']) ? ("ADR:" . $baseData['address'] . "\n") : '';
+        // $vcard .= isset($contact['fullName']) ? ("ORG:" . $contact['fullName'] . "\n") : '';
+        // $vcard .= isset($contact['person']) ? ("FN:" . $contact['person'] . "\n") : '';
+        // $vcard .= isset($contact['description']) ? ("NOTE:" . $contact['description'] . "\n") : '';
         $vcard .= "URL:" . route('pages.main') . "\n";
 
         $vcard .= "END:VCARD";
@@ -125,14 +107,14 @@ class PageController extends Controller
             size: 200,
             margin: 13,
             roundBlockSizeMode: RoundBlockSizeMode::Margin,
-            logoPath: public_path('logo.png'),
+            // logoPath: public_path('logo.png'),
         );
 
         $result = $builder->build();
         $qrDataUri = $result->getDataUri();
 
         // $token = "4582fa317a5f61db6f755a3c39655c94b0d19187";
-        // $inn = "7707083893"; // тестовый ИНН (Сбербанк)
+        // $inn = $contact['inn']; // тестовый ИНН (Сбербанк)
 
         // $response = Http::withOptions([
         //     'verify' => false, // отключаем SSL-проверку
@@ -148,14 +130,21 @@ class PageController extends Controller
 
         // $dadata = $response->json();
 
-        return view('pages.contacts', compact('qrDataUri', 'contacts', 'messangers'));
+
+        $meta = [
+            'title' => $page['data']['seoTitle'] ?? $page['data']['header'] ?? 'Страница контактов',
+            'description' => $page['data']['seoDescription'] ?? $page['data']['description'] ?? null,
+            'canonical' => route('pages.contacts')
+        ];
+
+        return view('pages.contacts', compact('qrDataUri', 'contact', 'page', 'meta'));
     }
 
     public function message(Request $request)
     {
         AntibotService::check($request);
 
-        $email = config('settings.contacts.email');
+        $email = $this->etp->GetBaseData()['email'];
         Mail::to($email)->send(new MessageMail($request));
 
         return back()->with('success', 'Сообщение отправлено нам на почту. Мы дадим обратную связь по указанным вами контакатам');
@@ -164,5 +153,48 @@ class PageController extends Controller
     public function privacy()
     {
         return view('pages.privacy');
+    }
+
+    public function sitemap()
+    {
+        $page = $this->etp->GetMainPage();
+        // $statistics = $page['statistics'];
+
+        return view('pages.sitemap');
+    }
+
+    public function search(Request $request)
+    {
+        $breadcrumbs = [
+            ['title' => 'Каталог', 'url' => route('catalogs.index')],
+            ['title' => 'Поиск']
+        ];
+
+        if ($request->filled('search') || $request->filled('manufacturer') || $request->filled('brand')) {
+
+            $params = [
+                'sort'      => $request->input('sort', 'rating-desc'),
+                'search'    => $request->input('search'),
+                'hierarchy' => true,
+            ];
+
+            if ($request->filled('manufacturer')) {
+                $params['manufacturer'] = $request->input('manufacturer');
+            }
+
+            if ($request->filled('brand')) {
+                $params['brand'] = $request->input('brand');
+            }
+
+            $offers = $this->etp->GetOffersList($params);
+        } else {
+            $offers = [];
+        }
+
+        $manufacturers = $this->etp->GetManufacturersList();
+        $brands = $this->etp->GetBrandsList(["manufacturer" => $request->input('manufacturer') ?? '']);
+        // $catalogs = $this->etp->GetCatalogsList(["search" => $request->input('search') ?? '', 'hierarchy' => true]);
+
+        return view('pages.search', compact('breadcrumbs', 'offers', 'manufacturers', 'brands'));
     }
 }

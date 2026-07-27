@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     updateBasket();
-    
+
     // Инициализируем индикаторы избранного и сравнения
     if (typeof Favorites !== 'undefined') {
         Favorites.updateIndicators();
@@ -103,7 +103,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (typeof Compare !== 'undefined') {
         Compare.updateIndicators();
     }
-    
+
     // Инициализируем иконки в карточках товаров
     document.querySelectorAll('.product-card').forEach(card => {
         const offerGuid = card.getAttribute('data-offer');
@@ -123,6 +123,12 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log('Найдено карточек:', cards.length);
 
         cards.forEach((card, index) => {
+            // Проверяем, были ли уже добавлены обработчики к этой карточке
+            if (card.hasAttribute('data-handlers-initialized')) {
+                console.log(`Карточка ${index} пропущена - обработчики уже инициализированы`);
+                return;
+            }
+
             const input = card.querySelector(".qty-input");
             const btnMinus = card.querySelector(".btn-minus");
             const btnPlus = card.querySelector(".btn-plus");
@@ -238,10 +244,16 @@ document.addEventListener("DOMContentLoaded", () => {
             // Делаем функцию глобальной
             window.updateBasketTotal = updateBasketTotal;
 
+            // Флаг для предотвращения обработки события change при программном изменении
+            let isProgrammaticChange = false;
+
             const startSetting = () => {
                 let localBasket = JSON.parse(localStorage.getItem('basket') || '[]');
                 const startQuantity = localBasket.find((item) => item.guid === guid)?.quantity || 0;
+
+                isProgrammaticChange = true;
                 input.value = startQuantity;
+                isProgrammaticChange = false;
 
                 if (startQuantity > 0) {
                     offerBtn.classList.add('d-none');
@@ -265,7 +277,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 offerBtn.classList.add('d-none');
                 offerCounter.classList.remove('d-none');
 
+                isProgrammaticChange = true;
                 input.value = +input.value + 1;
+                isProgrammaticChange = false;
+
                 addToBasket(guid);
                 updateBasket();
                 console.log('Товар добавлен в корзину', guid);
@@ -278,7 +293,10 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             btnPlus.addEventListener("click", () => {
+                isProgrammaticChange = true;
                 input.value = +input.value + 1;
+                isProgrammaticChange = false;
+
                 addToBasket(guid);
                 updateBasket();
                 if (totalPrice) {
@@ -290,6 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             btnMinus.addEventListener("click", () => {
+                isProgrammaticChange = true;
                 if (Number(input.value) > 1) {
                     input.value = +input.value - 1;
                 } else {
@@ -298,6 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     offerBtn.classList.remove('d-none');
                     offerCounter.classList.add('d-none');
                 }
+                isProgrammaticChange = false;
 
                 deleteFromBasket(guid);
                 updateBasket();
@@ -310,6 +330,11 @@ document.addEventListener("DOMContentLoaded", () => {
             });
 
             input.addEventListener("change", () => {
+                // Пропускаем обработку, если изменение было программным
+                if (isProgrammaticChange) {
+                    return;
+                }
+
                 const newQuantity = Number(input.value);
 
                 if (newQuantity === 0) {
@@ -345,6 +370,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     e.preventDefault();
                 }
             });
+
+            // Отмечаем, что обработчики для этой карточки уже инициализированы
+            card.setAttribute('data-handlers-initialized', 'true');
         });
     };
 

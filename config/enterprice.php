@@ -1,7 +1,8 @@
 <?php
 
 return [
-    'base_url' => 'http' . (env('ETP_SSL') ? 's' : '') . '://' . env('ETP_DOMAIN') . '/' . env('ETP_BASE_NAME') . '/' . env('ETP_API_PATH') . '/',
+    'base_url' => 'https://' . env('ETP_DOMAIN') . '/' . env('ETP_PUBLISH') . '/hs/',
+    'base' => 'https://' . env('ETP_DOMAIN') . '/' . env('ETP_PUBLISH') . '/',
     'username' => env('ETP_LOGIN'),
     'password' => env('ETP_PASSWORD')
 ];

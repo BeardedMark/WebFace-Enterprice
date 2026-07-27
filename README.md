@@ -97,7 +97,7 @@ npm run dev
 ## Структура проекта
 
 - `app/Http/Controllers/` - контроллеры приложения
-- `app/Services/` - сервисы (ExtensionService для работы с ETP API, QrService, AntibotService)
+- `app/Services/` - сервисы (EnterpriceService для работы с ETP API, QrService, AntibotService)
 - `app/Mail/` - классы для отправки email
 - `resources/views/` - Blade-шаблоны
 - `routes/web.php` - маршруты приложения
@@ -105,7 +105,7 @@ npm run dev
 
 ## Основные сервисы
 
-- **ExtensionService** - интеграция с внешним ETP API (каталоги, товары, заказы, пользователи)
+- **EnterpriceService** - интеграция с внешним ETP API (каталоги, товары, заказы, пользователи)
 - **QrService** - генерация QR-кодов
 - **AntibotService** - защита от автоматических запросов
 

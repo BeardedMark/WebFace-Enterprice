@@ -1,20 +1,22 @@
 @extends('layouts.container')
 @section('title', 'Ошибка 1С')
+@section('description', 'Ошибка ответа от 1С')
+{{-- @section('canonical', route('pages.error')) --}}
 
 @section('container-content')
-    <div class="row">
-        <div class="col">
-            <section class="flex-col-34">
-                <div class="flex-col-5 pad-x-5">
-                    <h1 class="font-xxl font-bold">Ошибка ответа от 1С</h1>
-                    <p class="font-lg">При обращении к базе возникли ошибки</p>
-                </div>
-                <iframe srcdoc='{{ $response }}' class="bord-rad-5 bord-other pad-x-5"></iframe>
+    <section class="flex-col-34">
+        <x-header tag='h1' size='xxl' title="Ошибка ответа от 1С"
+            description="При обращении к базе возникли ошибки!" />
 
+        <div class="row">
+            <div class="col">
                 <div class="flex-col-5">
 
+                    <label class="pad-x-5 color-second">Адрес запроса:</label>
                     <input class="input" type="text" name="resource" id="resource" value="{{ $url }}"
                         placeholder="Resource">
+
+                    <label class="pad-x-5 color-second">Параметры запроса:</label>
                     <div class="flex-col">
                         <div class="bord-rad-5 pad-13 bord-other">
                             <p>{{ mb_strtoupper($method) }}</p>
@@ -22,16 +24,16 @@
                         </div>
                     </div>
                 </div>
+            </div>
 
-            </section>
-        </div>
-
-        <div class="col col-4 offset-1">
-            <div class="flex-col-21 ai-center jc-center">
-                <img width="128" height="128" src="https://img.icons8.com/fluency-systems-regular/128/error.png"
-                    alt="web-globe" />
+            <div class="col col-5 offset-1">
+                <div class="flex-col-21 ai-center jc-center">
+                    <img width="128" height="128" src="https://img.icons8.com/fluency-systems-regular/128/error.png"
+                        alt="web-globe" />
                     <span class="color-danger font-bold font-lg">{{ $code }}</span>
+                </div>
+                <iframe srcdoc='{{ $response }}' class="w-100 h-100"></iframe>
             </div>
         </div>
-    </div>
+    </section>
 @endsection

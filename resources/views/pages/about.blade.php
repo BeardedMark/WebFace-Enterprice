@@ -1,14 +1,18 @@
 @extends('layouts.container')
-@section('title', 'О компании')
+@section('title', $meta['title'])
+@section('description', $meta['description'])
+@section('canonical', $meta['canonical'])
 
 @section('container-content')
+<x-code :code="compact('page', 'meta')" />
+
     <section class="row g-4 ai-center">
         <div class="col">
             <div class="flex-col-8 pad-x-13">
-                <h1 class="font-xxl font-bold">Подробнее о компании</h1>
-                <p class="font-md">Мы живём в эпоху перемен. Пандемия Covid-19 изменила правила игры: приоритетами
+                <h1>Подробнее о компании</h1>
+                <p class="font-md">Мы живём в эпоху перемен. Пандемия Ковид-19 изменила правила игры: приоритетами
                     стали доставка, безопасность и устойчивое развитие — и это открыло перед рынком огромные
-                    возможности. Именно поэтому DNL (Digital Nationwide Logistic) формирует новый взгляд и подход к
+                    возможности. Именно поэтому ДНЛ формирует новый взгляд и подход к
                     своей сфере деятельности</p>
                 <p class="font-md">Продукция нашего ассортимента используется в повседневной жизни каждым человеком и
                     выполняет важные задачи. Мы внимательно подбираем только те товары, которые наилучшим образом
@@ -18,8 +22,8 @@
 
         <div class="col col-4 offset-1">
             <a class="bord-rad-13 img-cover back-light curs-z-in"
-                href="https://dnlmarket.ru/local/templates/main/img/mainAbout.jpg" target="_blink">
-                <img src="https://dnlmarket.ru/local/templates/main/img/mainAbout.jpg" alt="api" />
+                href="{{ asset('storage/images/promo/mainAbout.jpg') }}" target="_blink">
+                <img src="{{ asset('storage/images/promo/mainAbout.jpg') }}" alt="api" />
             </a>
         </div>
     </section>
@@ -29,7 +33,7 @@
     <section class="row g-4 jc-center">
         <div class="col col-lg-7">
             <div class="flex-col-8 pad-x-13 flex-center">
-                <h2 class="font-xxl font-bold">Наша цель</h2>
+                <h2>Наша цель</h2>
                 <p class="font-xl font-center">создать компанию, которая не просто отвечает требованиям
                     современности, но и оказывает устойчивое влияние, формируя облик будущего мира</p>
             </div>
@@ -41,15 +45,15 @@
     <section class="row g-4 ai-center">
         <div class="col col-4">
             <div class="bord-rad-13 img-cover back-light">
-                <img src="https://dnlmarket.ru/local/templates/main/img/who-we-img.jpg" alt="api" />
+                <img src="{{ asset('storage/images/promo/who-we-img.jpg') }}" alt="api" />
             </div>
         </div>
 
         <div class="col offset-1">
             <section class="flex-col-34 pad-x-13">
                 <div class="flex-col-8">
-                    <h2 class="font-xxl font-bold">Кто мы?</h2>
-                    <p class="">DNL (Digital Nationwide Logistic) — самая динамично развивающаяся компания на
+                    <h2>Кто мы?</h2>
+                    <p class="">ДНЛ Маркет — самая динамично развивающаяся компания на
                         рынке экспендиалов в СФО. Ежегодный рост наших продаж составляет около 100% начиная с 2017 года
                     </p>
                 </div>
@@ -84,7 +88,7 @@
     <section class="row g-4">
         <div class="col">
             <div class="flex-col-8 pad-x-5">
-                <h2 class="font-xxl font-bold">Что мы делаем</h2>
+                <h2>Что мы делаем</h2>
                 <p class="color-second">Мы работаем для бизнеса, людей, сотрудников, рынка и планеты — обеспечивая
                     качество, вдохновляя на изменения, развивая партнёрство и создавая более устойчивое будущее</p>
             </div>
@@ -127,7 +131,7 @@
 
                 <p class="flex-col flex-grow pad-x-5">
                     <span class="font-xl"><span class="color-brand">●</span> Для планеты</span>
-                    <span class="font-md">Re Cycled. Мы даём пластиковым материалам вторую жизнь. Re Grow. Постепенно
+                    <span class="font-md">Перерабатываемый. Мы даём пластиковым материалам вторую жизнь. Возобновляемый. Постепенно
                         переводим ассортимент на полностью разлагаемые органические материалы, формируя ответственное
                         будущее</span>
                 </p>
@@ -141,7 +145,7 @@
         <div class="col">
             <section class="flex-col-34">
                 <div class="flex-col-8 pad-x-5">
-                    <h2 class="font-xxl font-bold">Наши приемущества</h2>
+                    <h2>Наши преимущества</h2>
                 </div>
 
                 <div class="row g-4">
@@ -186,7 +190,7 @@
                             <img width="64" height="64"
                                 src="https://img.icons8.com/fluency-systems-regular/128/bot--v1.png" alt="bot--v1" />
                             <p class="font-lg">Автоматизация и точность</p>
-                            <p class="font-md color-second">Собственная IT-команда позволяет нам автоматизировать
+                            <p class="font-md color-second">Собственная ИТ-команда позволяет нам автоматизировать
                                 процессы,
                                 минимизировать ошибки и действовать быстро и точно</p>
                         </div>
@@ -225,7 +229,7 @@
     <section class="row g-4">
         <div class="col">
             <div class="flex-col-8 pad-x-5">
-                <h2 class="font-xxl font-bold">К чему мы стремимся</h2>
+                <h2>К чему мы стремимся</h2>
                 <p class="color-second">Мы стремимся развиваться вместе с клиентами, формируя новые стандарты
                     качества, безопасности и сервиса, чтобы делать жизнь людей комфортнее и лучше каждый день</p>
             </div>
@@ -277,14 +281,14 @@
         <div class="col">
             <section class="flex-col-34">
                 <div class="flex-col-8 pad-x-5">
-                    <h2 class="font-xxl font-bold">Наши ценности</h2>
+                    <h2>Наши ценности</h2>
                 </div>
 
                 <div class="row g-4">
                     <div class="col-3">
                         <div class="flex-col-8">
                             <div class="bord-rad-5 img-cover back-light">
-                                <img src="https://dnlmarket.ru/local/templates/main/img/AboutBanner1.jpg"
+                                <img src="{{ asset('storage/images/promo/AboutBanner1.jpg') }}"
                                     alt="api" />
                             </div>
                             <div class="flex-col-5 pad-x-5">
@@ -298,7 +302,7 @@
                     <div class="col-3">
                         <div class="flex-col-8">
                             <div class="bord-rad-5 img-cover back-light">
-                                <img src="https://dnlmarket.ru/local/templates/main/img/AboutBanner2.jpg"
+                                <img src="{{ asset('storage/images/promo/AboutBanner2.jpg') }}"
                                     alt="api" />
                             </div>
                             <div class="flex-col-5 pad-x-5">
@@ -313,7 +317,7 @@
                     <div class="col-3">
                         <div class="flex-col-8">
                             <div class="bord-rad-5 img-cover back-light">
-                                <img src="https://dnlmarket.ru/local/templates/main/img/AboutBanner3.jpg"
+                                <img src="{{ asset('storage/images/promo/AboutBanner3.jpg') }}"
                                     alt="api" />
                             </div>
                             <div class="flex-col-5 pad-x-5">
@@ -326,7 +330,7 @@
                     <div class="col-3">
                         <div class="flex-col-8">
                             <div class="bord-rad-5 img-cover back-light">
-                                <img src="https://dnlmarket.ru/local/templates/main/img/AboutBanner4.jpg"
+                                <img src="{{ asset('storage/images/promo/AboutBanner4.jpg') }}"
                                     alt="api" />
                             </div>
                             <div class="flex-col-5 pad-x-5">
@@ -345,7 +349,7 @@
     <section class="row g-4 ">
         <div class="col col-4">
             <div class="flex-col-8 pad-x-5">
-                <h2 class="font-xxl font-bold">Принципы компании</h2>
+                <h2>Принципы компании</h2>
             </div>
         </div>
 
@@ -421,10 +425,42 @@
 
         <div class="col offset-1">
             <div class="flex-col-8 pad-x-5">
-                <h2 class="font-xxl font-bold">Часто задаваемые вопросы</h2>
+                <h2>Часто задаваемые вопросы</h2>
                 <p class="color-second">В этом разделе мы собрали ответы на самые частые вопросы клиентов — от
                     условий заказа и брендирования до нюансов доставки и работы с индивидуальными запросами</p>
             </div>
         </div>
     </section>
+
+    <div class="cut"></div>
+
+    <section class="row g-4">
+        <div class="col">
+            <div class="flex-col-13">
+                <x-header tag='h2' size='xl' color='brand' title="Карточка организации" />
+
+                @component('etp.organizations.components.card', ['organization' => $page['organization']])
+                @endcomponent
+            </div>
+        </div>
+
+        @isset($page['manager']['name'])
+            <div class="col col-4 col-md-6 offset-md-1">
+                <div class="flex-col-13 ai-center jc-center">
+                    <x-header tag='h3' size='lg' color='brand' title="Контактное лицо" />
+
+                    <p class="flex-col font-center d-print-none">
+                        <span class="font-lg">{{ $page['manager']['name'] }}</span>
+                        <span class="font-sm color-second">Отсканируйте код с помощью телефона</span>
+                    </p>
+                </div>
+            </div>
+        @endisset
+    </section>
+
+    @isset ($page['data']['content'])
+        <section class="html pad-x-13">
+            {!! $page['data']['content'] !!}
+        </section>
+    @endisset
 @endsection
