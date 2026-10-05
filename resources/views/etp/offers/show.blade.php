@@ -95,7 +95,7 @@
                                             alt="bookmark-ribbon" /></span>
                                 </button> --}}
 
-                                @component('etp.offers.data.counter', ['offerGuid' => $offer['guid'], 'variantGuid' => $variant['guid'] ?? null])
+                                @component('enterprise.offers.data.counter', ['offerGuid' => $offer['guid'], 'variantGuid' => $variant['guid'] ?? null])
                                 @endcomponent
                             </div>
                         </div>
@@ -126,7 +126,7 @@
 
                                         <span class="flex-row-8">
                                             <span class="font-sm color-second" data-tooltip="Наличие">
-                                                @component('etp.offers.data.stock', [
+                                                @component('enterprise.offers.data.stock', [
                                                     'totalStock' => $variant['totalStock'],
                                                     'freeStock' => $variant['freeStock'],
                                                     'unit' => $offer['unit'],
@@ -148,7 +148,7 @@
                                         <span class="font-sm color-second">Цена по запросу</span>
                                     @endif
 
-                                    @component('etp.offers.data.counter', ['offerGuid' => $offer['guid'], 'variantGuid' => $variant['guid'] ?? null])
+                                    @component('enterprise.offers.data.counter', ['offerGuid' => $offer['guid'], 'variantGuid' => $variant['guid'] ?? null])
                                     @endcomponent
 
 

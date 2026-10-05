@@ -1,5 +1,5 @@
-<a class="link back-light flex-col bord-other bord-rad-13 hover-up over-hide h-100" href="{{ $link ?? '#' }}"
-    onclick="showPreloader()">
+<a class="link back-light flex-col bord-other bord-rad-13 hover-up over-hide h-100"
+@isset($link) href="{{ $link }}" onclick="showPreloader()" @endif>
 
     @isset($image)
         <div class="img-cover back-light"  style="height: {{ $height ?? '230px' }}">

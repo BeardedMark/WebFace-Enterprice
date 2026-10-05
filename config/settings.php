@@ -2,8 +2,9 @@
 
 return [
     'debug' => [
+        'true' => false,
         'grid' => false,
-        'code' => true,
+        'code' => false,
         'data' => false
     ]
 ];

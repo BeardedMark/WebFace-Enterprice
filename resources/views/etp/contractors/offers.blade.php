@@ -32,7 +32,7 @@
 
         <div class="pad-x-5">
             @if (count($offers) > 0)
-                @component('etp.orders.frames.offers-list', ['offers' => $offers])
+                @component('enterprise.orders.frames.offers-list', ['offers' => $offers])
                 @endcomponent
             @else
                 <p class="pad-x-8 flex-col">

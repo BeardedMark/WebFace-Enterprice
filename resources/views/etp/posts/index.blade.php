@@ -17,7 +17,7 @@
         <section class="row g-2">
             @foreach ($posts as $post)
                 <div class="col-12 col-md-3">
-                    @component('etp.posts.frames.card', ['post' => $post])
+                    @component('enterprise.posts.frames.card', ['post' => $post])
                     @endcomponent
                 </div>
             @endforeach

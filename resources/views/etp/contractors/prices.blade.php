@@ -4,7 +4,7 @@
 @section('canonical', route('contractors.prices'))
 
 @section('sidebar-content')
-    <x-code :code="compact('contractors', 'breadcrumbs', 'deals', 'offers')" />
+    <x-code :code="compact('contractors', 'breadcrumbs', 'terms', 'offers')" />
 
     <div class="flex-col-34">
         <div class="flex-col-21 flex-grow">
@@ -22,18 +22,18 @@
                 @endforeach
             </select>
 
-            {{-- @if (count($deals) > 0) --}}
-                <select class="input flex-grow" name="deal" onchange="this.form.submit()">
-                    <option value="">Выберите соглашение ({{ count($deals) }})</option>
-                    @foreach ($deals as $deal)
-                        <option value="{{ $deal['guid'] }}" {{ request('deal') == $deal['guid'] ? 'selected' : '' }}>
-                            {{ $deal['name'] }}</option>
+            {{-- @if (count($terms) > 0) --}}
+                <select class="input flex-grow" name="term" onchange="this.form.submit()">
+                    <option value="">Выберите соглашение ({{ count($terms) }})</option>
+                    @foreach ($terms as $term)
+                        <option value="{{ $term['guid'] }}" {{ request('term') == $term['guid'] ? 'selected' : '' }}>
+                            {{ $term['name'] }}</option>
                     @endforeach
                 </select>
             {{-- @endif --}}
 
             {{-- если у тебя в запросе есть еще параметры (например, page, search), их надо сохранить --}}
-            @foreach (request()->except('contractor', 'deal') as $name => $value)
+            @foreach (request()->except('contractor', 'term') as $name => $value)
                 <input type="hidden" name="{{ $name }}" value="{{ $value }}">
             @endforeach
 
@@ -42,7 +42,7 @@
 
         @if (count($offers) > 0)
             <div class="pad-x-8">
-                @component('etp.orders.frames.offers-list', ['offers' => $offers])
+                @component('enterprise.orders.frames.offers-list', ['offers' => $offers])
                 @endcomponent
             </div>
         @endif

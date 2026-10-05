@@ -1,5 +1,5 @@
-<a class="pos-rel hover-scale back-light flex-row bord-other bord-rad-13 over-hide h-100"
-    @isset($link) href="{{ $link }}" @endif onclick="showPreloader()"
+<a class="pos-rel back-light flex-row bord-other bord-rad-13 over-hide h-100"
+    @isset($link) href="{{ $link }}" onclick="showPreloader()" @endif
     style="max-height: {{ $height ?? '100%' }}">
 
     @isset($image)

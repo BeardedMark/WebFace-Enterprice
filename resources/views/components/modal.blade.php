@@ -1,6 +1,6 @@
 @props([
     'name',
-    'width' => '500px',
+    'width' => '600px',
     'title' => 'Дополнительно',
     'position' => 'center', // center, top, bottom, left, right
 ])
@@ -27,7 +27,7 @@
     <div class="modal-overlay" onclick="closeModal('{{ $name }}')"></div>
 
     <div
-        class="modal-content back-light flex-col-13 shadow-real pad-8 {{ $contentClass }}"
+        class="modal-content back-light flex-col-13 shadow-real pad-34 {{ $contentClass }}"
         style="width: {{ $width }}"
     >
         <div class="flex-row-8">
@@ -107,7 +107,7 @@
         max-height: 100vh;
         overflow: auto;
 
-        border-radius: 13px;
+        border-radius: 29px;
     }
 
     .modal-content-top {

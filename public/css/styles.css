@@ -79,6 +79,8 @@ body {
     user-select: none;
     width: 33px;
     height: 33px;
+    min-width: 33px;
+    min-height: 33px;
     border-radius: 5px;
     padding: 5px 5px;
     transition: 0.2s;
@@ -201,7 +203,8 @@ body {
 .item-main,
 .item-second,
 .item-other,
-.item-prime {
+.item-prime,
+.item-brand {
     height: 33px;
     display: inline-flex;
     gap: 8px;
@@ -255,6 +258,18 @@ body {
 
 .item-prime:hover {
     background-color: var(--color-other);
+}
+
+.item-brand {
+    background-color: var(--color-brand);
+    border: 1px solid var(--color-brand);
+    color: var(--color-prime);
+}
+
+.item-brand:hover {
+    background-color: var(--color-main);
+    border: 1px solid var(--color-main);
+    color: var(--color-prime);
 }
 
 /* Элемент */

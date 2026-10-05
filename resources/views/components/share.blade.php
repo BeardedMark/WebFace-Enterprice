@@ -3,12 +3,12 @@
 </button>
 
 <x-modal name="share" title="Поделиться ссылкой на страницу">
-    <div class="flex-col-5">
+    <div class="flex-col-13">
         @php
             $url = request()->fullUrl();
             $urlencode = urlencode($url);
         @endphp
-
+        <p class="pad-x-5 font-sm">Скопируйте ссылку</p>
         <div class="flex-row-5">
             <input type="text" class="input flex-grow" readonly value="{{ request()->fullUrl() }}">
 
@@ -18,34 +18,41 @@
             </button>
         </div>
 
-        <div class="flex-row-8">
-            <div class="flex-row-5 flex-grow">
-                <a class="icon" target="_blink" title="Telegram"
-                    href="https://t.me/share/url?url={{ $urlencode }}&text=Смотри сюда!">
-                    <img width="20" height="20"
-                        src="https://img.icons8.com/fluency-systems-regular/20/telegram-app.png" alt="telegram-app" />
-                </a>
+        <p class="pad-x-5 font-sm">или поделитесь удобным для вас образом</p>
 
-                <a class="icon" target="_blink" title="WhatsApp"
-                    href="https://wa.me/?text={{ $urlencode }}%20Смотри+сюда!">
-                    <img width="20" height="20"
-                        src="https://img.icons8.com/fluency-systems-regular/20/whatsapp.png" alt="whatsapp" />
-                </a>
-
-                <a class="icon" target="_blink" title="ВКонтакте"
+        <div class="flex-col-8">
+            <div class="flex-col-5 flex-grow">
+                <a class="item-other" target="_blink" title="ВКонтакте"
                     href="https://vk.com/share.php?url={{ $urlencode }}">
                     <img width="20" height="20"
                         src="https://img.icons8.com/fluency-systems-regular/20/vkontakte.png" alt="vkontakte" />
+                    Вконтакте
                 </a>
 
-                <a class="icon" target="_blink" title="Email"
+                <a class="item-other" target="_blink" title="Telegram"
+                    href="https://t.me/share/url?url={{ $urlencode }}&text=Смотри сюда!">
+                    <img width="20" height="20"
+                        src="https://img.icons8.com/fluency-systems-regular/20/telegram-app.png" alt="telegram-app" />
+                    Telegram
+                </a>
+
+                <a class="item-other" target="_blink" title="WhatsApp"
+                    href="https://wa.me/?text={{ $urlencode }}%20Смотри+сюда!">
+                    <img width="20" height="20"
+                        src="https://img.icons8.com/fluency-systems-regular/20/whatsapp.png" alt="whatsapp" /> WhatsApp
+                </a>
+
+                <a class="item-other" target="_blink" title="Email"
                     href="mailto:?subject=Заголовок&body=Текст%20и%20ссылка">
                     <img width="20" height="20"
-                        src="https://img.icons8.com/fluency-systems-regular/20/email--v1.png" alt="email--v1" />
+                        src="https://img.icons8.com/fluency-systems-regular/20/email--v1.png" alt="email--v1" /> Email
                 </a>
-            </div>
 
-            <button id="share-btn" class="item-other">Другие варианты</button>
+                <button id="share-btn" class="item-other">
+                    <img width="20" height="20" src="https://img.icons8.com/fluency-systems-regular/20/more.png"
+                        alt="more" /> Еще варианты
+                </button>
+            </div>
         </div>
     </div>
 </x-modal>

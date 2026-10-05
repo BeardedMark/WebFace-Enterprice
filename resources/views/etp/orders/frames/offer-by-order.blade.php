@@ -56,7 +56,7 @@
         <p class="font-bold totalPrice"></p>
     </div>
 
-    @component('etp.offers.data.counter', [
+    @component('enterprise.offers.data.counter', [
         'offerGuid' => $offer['offer']['guid'],
         'variantGuid' => $offer['variant']['guid'] ?? null,
         'showCounter' => true,

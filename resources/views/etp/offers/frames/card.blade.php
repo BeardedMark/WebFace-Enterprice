@@ -1,7 +1,7 @@
 <div class="flex-col h-100 product-card" data-offer="{{ $offer['guid'] }}" data-variant="{{ $variant['guid'] ?? '' }}"
     data-price="{{ $offer['maxPrice'] ?? 0 }}">
     <a href="{{ route('offers.show', $offer['guid']) }}" onclick="showPreloader()"
-        class="bord-other bord-rad-13 hover-up img-square back-light pad-5">
+        class="bord-other bord-rad-13 hover-up img-square back-light">
         @empty($offer['imageGuid'])
             <img class="lock" width="auto" height="auto"  src="https://img.icons8.com/fluency-systems-regular/EFEDEB/48/no-image.png" alt="no-image">
         @else
@@ -12,7 +12,7 @@
         <div class="pos-abs pos-fill flex-col-8 font-sm w-100 h-100 hover-show">
             <div class="flex-row-8 flex-grow">
                 <div class="pad-8 flex-row-5">
-                    <div data-tooltip="@component('etp.offers.data.stock', [
+                    <div data-tooltip="@component('enterprise.offers.data.stock', [
                         'totalStock' => $offer['totalStock'],
                         'freeStock' => $offer['freeStock'],
                         'unit' => $offer['unit'],
@@ -120,7 +120,7 @@
                         data-tooltip="Вариантов" onclick="showPreloader()">{{ $offer['countVariants'] }}
                     </a>
                 @else
-                    @component('etp.offers.data.counter', ['offerGuid' => $offer['guid']])
+                    @component('enterprise.offers.data.counter', ['offerGuid' => $offer['guid']])
                     @endcomponent
                 @endif
             </div>

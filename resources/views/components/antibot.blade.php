@@ -1,31 +1,42 @@
-<div id="antibot-check"></div>
+@php
+    $componentId = 'antibot-' . Str::uuid();
+@endphp
 
-{{-- honeypot (скрытое поле, видят только боты) --}}
+<div id="{{ $componentId }}"></div>
+
 <input type="text" name="contact_field" value="" style="display:none">
 
-{{-- поле для времени заполнения --}}
-<input type="hidden" name="form_start_time" id="form-start-time" value="{{ now()->timestamp }}">
+<input type="hidden" name="form_start_time" value="{{ now()->timestamp }}">
 
 <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // вставляем чекбокс только через JS
-        const wrap = document.getElementById("antibot-check");
-        if (wrap) {
-            const label = document.createElement("label");
-            label.style.display = "block";
+        const wrap = document.getElementById("{{ $componentId }}");
 
-            const checkbox = document.createElement("input");
-            checkbox.type = "checkbox";
-            checkbox.name = "human_confirm";
-            checkbox.required = true;
-
-            label.appendChild(checkbox);
-            label.appendChild(document.createTextNode(" Я не робот"));
-            wrap.appendChild(label);
+        if (!wrap) {
+            return;
         }
 
-        // фиксируем момент открытия формы
-        const startInput = document.getElementById("form-start-time");
-        startInput.value = Date.now(); // JS timestamp в миллисекундах
+        const label = document.createElement("label");
+        label.style.display = "block";
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.name = "human_confirm";
+        checkbox.required = true;
+
+        label.appendChild(checkbox);
+        label.appendChild(document.createTextNode(" Я не робот"));
+
+        wrap.appendChild(label);
+
+        const form = wrap.closest("form");
+
+        if (form) {
+            const startInput = form.querySelector('[name="form_start_time"]');
+
+            if (startInput) {
+                startInput.value = Date.now();
+            }
+        }
     });
 </script>

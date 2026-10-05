@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Etp;
+namespace App\Http\Controllers\Enterprice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,7 +11,7 @@ class OfferController extends Controller
     {
         $offers = $this->etp->GetOffersList();
 
-        return view('etp.offers.index', compact('offers'));
+        return view('enterprise.offers.index', compact('offers'));
     }
 
     // public function create() {}
@@ -21,9 +21,14 @@ class OfferController extends Controller
     public function show(string $id)
     {
         $offer = $this->etp->GetOfferCard($id);
-        $variants = $this->etp->GetVariantsList(['offerGuid' => $offer['guid']]);
 
-        $breadcrumbs = [['title' => 'Каталог', 'url' => route('catalogs.index')]];
+        $variants = $this->etp->GetVariantsList([
+            'offerGuid' => $offer['guid']
+        ]);
+
+        $breadcrumbs = [
+            ['title' => 'Каталог', 'url' => route('catalogs.index')]
+            ];
 
         if (count($offer['parents']) > 1) {
             $breadcrumbs[] = ['title' => '...'];
@@ -35,7 +40,7 @@ class OfferController extends Controller
 
         $breadcrumbs[] = ['title' => $offer['name']];
 
-        return view('etp.offers.show', compact('offer', 'variants', 'breadcrumbs'));
+        return view('enterprise.offers.show', compact('offer', 'variants', 'breadcrumbs'));
     }
 
     // public function edit(string $id) {}
@@ -47,7 +52,8 @@ class OfferController extends Controller
     public function price()
     {
         $prices = $this->etp->getOffersByUser(session('user')['guid']);
-        return view('etp.offers.price', compact('prices'));
+
+        return view('enterprise.offers.price', compact('prices'));
     }
 
     public function favorites()
@@ -56,13 +62,14 @@ class OfferController extends Controller
             'b2eea75f-ba2f-11ec-80c8-00155d62e314',
             '6c5648a6-5f45-11ec-80c8-00155d588b1f#383d903c-d745-11ec-80d1-00155d62e314'
         ]]);
-        return view('etp.offers.favorites', compact('offers'));
+
+        return view('enterprise.offers.favorites', compact('offers'));
     }
 
     public function compare()
     {
         $offers = [];
-        return view('etp.offers.compare', compact('offers'));
+        return view('enterprise.offers.compare', compact('offers'));
     }
 
     public function card(string $guid)
@@ -72,7 +79,7 @@ class OfferController extends Controller
             return response()->json(['success' => false, 'html' => ''], 404);
         }
         $variant = null;
-        $html = view('etp.offers.frames.card', compact('offer', 'variant'))->render();
+        $html = view('enterprise.offers.frames.card', compact('offer', 'variant'))->render();
         return response()->json(['success' => true, 'html' => $html]);
     }
 
@@ -93,7 +100,7 @@ class OfferController extends Controller
 
         $offers = $this->etp->GetOffersListByGuids(['offers' => $guids]);
         $offersList = is_array($offers) && isset($offers['offers']) ? $offers['offers'] : (is_array($offers) ? $offers : []);
-        $html = view('etp.orders.frames.offers-list', ['offers' => $offersList])->render();
+        $html = view('enterprise.orders.frames.offers-list', ['offers' => $offersList])->render();
 
         return response()->json(['success' => true, 'html' => $html]);
     }
@@ -117,6 +124,6 @@ class OfferController extends Controller
             'quantity' => $quantity,
         ];
 
-        return view('etp.orders.frames.offerbyorder', ['item' => $item]);
+        return view('enterprise.orders.frames.offerbyorder', ['item' => $item]);
     }
 }

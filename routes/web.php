@@ -4,10 +4,11 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     PageController,
     AuthController,
-    ImageController
+    ImageController,
+    MessageController
 };
 
-use App\Http\Controllers\Etp\{
+use App\Http\Controllers\Enterprice\{
     ContractorController,
     OfferController,
     CatalogController,
@@ -24,11 +25,6 @@ use App\Http\Middleware\{
 
 // Pages
 Route::get('/', [PageController::class, 'main'])->name('pages.main');
-Route::get('/about', [PageController::class, 'about'])->name('pages.about');
-Route::get('/contacts', [PageController::class, 'contacts'])->name('pages.contacts');
-Route::post('/message', [PageController::class, 'message'])->name('pages.message');
-Route::get('/privacy', [PageController::class, 'privacy'])->name('pages.privacy');
-Route::get('/sitemap', [PageController::class, 'sitemap'])->name('pages.sitemap');
 Route::get('/search', [PageController::class, 'search'])->name('pages.search');
 
 // Auth
@@ -51,8 +47,10 @@ Route::middleware(CheckAuth::class)->group(function () {
     Route::resource('/contractors', ContractorController::class);
 });
 
-// Images proxy
+// Tech links
 Route::get('/images/{type}/{guid}', [ImageController::class, 'proxy'])->name('images.proxy');
+Route::get('/images/qrcode', [ImageController::class, 'qrcode'])->name('images.qrcode');
+Route::post('/message', [MessageController::class, 'send'])->name('message.send');
 
 // Catalogs
 Route::get('/catalogs/tree', [CatalogController::class, 'tree'])->name('catalogs.tree');
@@ -75,4 +73,6 @@ Route::resource('/orders', OrderController::class);
 Route::resource('/manufacturers', ManufacturerController::class);
 Route::resource('/brands', BrandController::class);
 Route::resource('/posts', PostController::class);
+
+Route::get('/{page}', [PageController::class, 'page'])->name('pages.page');
 

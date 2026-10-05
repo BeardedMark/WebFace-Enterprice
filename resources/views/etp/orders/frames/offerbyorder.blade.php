@@ -25,7 +25,7 @@
         </a>
     </div>
 
-    @component('etp.offers.data.counter', [
+    @component('enterprise.offers.data.counter', [
         'offerGuid' => $item['offer']['guid'],
         'variantGuid' => $item['variant']['guid'] ?? null,
         'showCounter' => true,

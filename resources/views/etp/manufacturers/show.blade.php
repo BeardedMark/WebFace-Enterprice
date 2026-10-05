@@ -28,7 +28,7 @@
     @if (count($brands) > 0)
         <section class="flex-col-21">
             <x-header tag='h2' size='xl' color='brand' title="Бренды производителя ({{ count($brands) }})" />
-            @component('etp.brands.frames.grid', compact('brands'))
+            @component('enterprise.brands.frames.grid', compact('brands'))
             @endcomponent
         </section>
     @endif
@@ -36,7 +36,7 @@
     @if (count($offers) > 0)
         <section class="flex-col-21">
             <x-header tag='h2' size='xl' color='brand' title="Товары производителя ({{ count($offers) }})" />
-            @component('etp.offers.frames.grid', compact('offers'))
+            @component('enterprise.offers.frames.grid', compact('offers'))
             @endcomponent
         </section>
     @endif

@@ -23,6 +23,8 @@
 
     <div class="flex-row-5 jc-end ai-center">
         <span class="ai-center flex-grow pad-x-5 font-sm"><x-antibot /></span>
+        <a class="button-second" href="{{ route('auth.register') }}">Регистрация</a>
         <button class="button-main" type="submit">Войти</button>
     </div>
 </form>
+

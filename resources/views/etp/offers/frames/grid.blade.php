@@ -26,8 +26,8 @@
 
     <div class="row g-4">
         @foreach ($offers as $offer)
-            <div class="col-6 col-md-4 col-lg-2">
-                @component('etp.offers.frames.card', compact('offer'))
+            <div class="col-6 col-md-4 col-lg-3">
+                @component('enterprise.offers.frames.card', compact('offer'))
                 @endcomponent
             </div>
         @endforeach

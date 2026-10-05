@@ -60,7 +60,7 @@
         <section class="row g-2">
             @foreach ($catalogs as $catalogItem)
                 <div class="col-12 col-md-6 col-lg-3">
-                    @component('etp.catalogs.frames.card', ['catalog' => $catalogItem])
+                    @component('enterprise.catalogs.frames.card', ['catalog' => $catalogItem])
                     @endcomponent
                 </div>
             @endforeach
@@ -71,7 +71,7 @@
         <section class="row g-4">
             @foreach ($offers as $offer)
                 <div class="col-6 col-md-4 col-lg-3">
-                    @component('etp.offers.frames.card', compact('offer'))
+                    @component('enterprise.offers.frames.card', compact('offer'))
                     @endcomponent
                 </div>
             @endforeach

@@ -4,7 +4,7 @@
             <div class="cut"></div>
         @endif
 
-        @component('etp.orders.frames.offer-by-order', ['offer' => $offers[$i]])
+        @component('enterprise.orders.frames.offer-by-order', ['offer' => $offers[$i]])
         @endcomponent
     @endfor
 </div>

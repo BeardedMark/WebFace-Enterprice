@@ -22,12 +22,12 @@
     </section>
 
     @if (count($catalogs) > 0)
-        @component('etp.catalogs.frames.grid', compact('catalogs'))
+        @component('enterprise.catalogs.frames.grid', compact('catalogs'))
         @endcomponent
     @endif
 
     @if (count($offers) > 0)
-        @component('etp.offers.frames.grid', compact('offers'))
+        @component('enterprise.offers.frames.grid', compact('offers'))
         @endcomponent
     @endif
 

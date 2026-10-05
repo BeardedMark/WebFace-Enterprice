@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Etp;
+namespace App\Http\Controllers\Enterprice;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -13,7 +13,9 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $user = session('user');
-        $contractors = $this->etp->GetContractorsList(['userGuid' => $user['guid']]);
+        $contractors = $this->etp->GetContractorsList([
+            'userGuid' => $user['guid']
+        ]);
 
         if (!empty($request['guid'])) {
             $orders = $this->etp->GetOrdersByContractor(['contractorGuid' => $request['guid']]);
@@ -21,18 +23,18 @@ class OrderController extends Controller
             $orders = $this->etp->listOrdersByUserGuid(['userGuid' => $user['guid']]);
         }
 
-        return view('etp.orders.index', compact('contractors', 'orders'));
+        return view('enterprise.orders.index', compact('contractors', 'orders'));
     }
 
     public function create()
     {
         $user = session('user');
-        $contractors = null;
+        $contractors = [];
 
         if ($user) {
             $contractors = $this->etp->GetContractorsList(['userGuid' => $user['guid']]);
         }
-        return view('etp.orders.create', compact('contractors', 'user'));
+        return view('enterprise.orders.create', compact('contractors', 'user'));
     }
 
     public function store(Request $request)
@@ -140,13 +142,13 @@ class OrderController extends Controller
     {
         $order = $this->etp->GetOrderCard(['guid' => $id]);
 
-        return view('etp.orders.show', compact('order'));
+        return view('enterprise.orders.show', compact('order'));
     }
 
     public function edit(string $id)
     {
         $offers = session('cart', []);
-        return view('etp.orders.edit', compact('offers'));
+        return view('enterprise.orders.edit', compact('offers'));
     }
 
     public function update(Request $request, string $id)
@@ -179,6 +181,6 @@ class OrderController extends Controller
 
     public function basket()
     {
-        return view('etp.orders.basket');
+        return view('enterprise.orders.basket');
     }
 }

@@ -59,6 +59,16 @@ class EnterpriceService
         return $this->request('get', 'pages/catalog')->json() ?? [];
     }
 
+    public function GetPageCard(string $page): array
+    {
+        return $this->request('get', 'pages/' . $page)->json() ?? [];
+    }
+
+    public function GetPagesList(array $data = []): array
+    {
+        return $this->request('get', 'pages', $data)->json() ?? [];
+    }
+
     // User
 
     public function GetUserCard(array $data = []): array

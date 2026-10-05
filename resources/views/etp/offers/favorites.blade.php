@@ -20,7 +20,7 @@
         </div>
 
         <div class="flex-col-13">
-            @component('etp.orders.frames.offers-list', compact('offers'))
+            @component('enterprise.orders.frames.offers-list', compact('offers'))
             @endcomponent
         </div>
 

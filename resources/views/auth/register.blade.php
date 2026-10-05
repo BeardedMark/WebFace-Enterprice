@@ -12,7 +12,7 @@
 
                     <div class="flex-row-5 pad-x-8">
                         <a class="button-second" href="{{ route('auth.login') }}">Вход</a>
-                        <a class="button-other" href="{{ route('pages.privacy') }}">Политика конфиденциальности</a>
+                        <a class="button-other" href="{{ route('pages.page', 'privacy') }}">Политика конфиденциальности</a>
                     </div>
                 </div>
             </div>

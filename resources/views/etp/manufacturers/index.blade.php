@@ -18,7 +18,7 @@
         <section class="row g-2">
             @foreach ($manufacturers as $manufacturer)
                 <div class="col-12 col-md-6 col-lg-3">
-                    @component('etp.manufacturers.frames.card', ['manufacturer' => $manufacturer])
+                    @component('enterprise.manufacturers.frames.card', ['manufacturer' => $manufacturer])
                     @endcomponent
                 </div>
             @endforeach
